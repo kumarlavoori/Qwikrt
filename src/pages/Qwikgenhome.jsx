@@ -412,7 +412,7 @@ function HeroServicePanel() {
             strip: "Every screen reviewed and approved by you before development begins.",
         },
         {
-            label: "pp Development", color: "#FF7B00",
+            label: "App Development", color: "#FF7B00",
             desc: "Cross-platform iOS & Android apps with Flutter — one codebase, native performance.",
             features: ["Cross-Platform", "Fast UI", "Scalable"],
             tech: ["Flutter", "Dart", "React Native", "JavaScript", "Swift", "Kotlin", "Firebase", "Supabase", "Stripe SDK", "GraphQL", "Push Notifications", "Fastlane"],

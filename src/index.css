@@ -204,7 +204,7 @@ body {
   overflow: hidden;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 900px) {
   .hero-svc-panel {
     min-height: 520px;
   }
@@ -532,11 +532,11 @@ body {
 
 @media (max-width: 1279px) {
   .hero-grid {
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 52% 48%;
   }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 900px) {
   .hero-grid {
     grid-template-columns: 1fr !important;
     min-height: auto;

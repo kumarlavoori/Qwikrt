@@ -198,35 +198,7 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
                         <div style={{ position: "absolute", top: "-1rem", right: "1.5rem", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(5rem,10vw,9rem)", color: C.purple, opacity: 0.04, lineHeight: 1, userSelect: "none", pointerEvents: "none" }}>{cur.num}</div>
 
                         {/* ── Pause/Play hint badge ── */}
-                        <div style={{
-                            position: "absolute", top: "1rem", right: "1rem",
-                            zIndex: 4, display: "flex", alignItems: "center", gap: "0.35rem",
-                            background: paused ? "rgba(255,60,40,0.10)" : "rgba(107,96,128,0.07)",
-                            border: `1px solid ${paused ? "rgba(255,60,40,0.25)" : "rgba(107,96,128,0.12)"}`,
-                            borderRadius: 50, padding: "0.28rem 0.65rem 0.28rem 0.5rem",
-                            transition: "all 0.35s ease",
-                            animation: paused ? "none" : "hintPulse 3s ease infinite",
-                            pointerEvents: "none",   // panel's own onClick handles it
-                        }}>
-                            <span style={{
-                                fontSize: "0.55rem",
-                                color: paused ? C.coral : C.inkSoft,
-                                opacity: paused ? 1 : 0.5,
-                                transition: "all 0.35s",
-                                lineHeight: 1,
-                            }}>
-                                {paused ? "▶" : "⏸"}
-                            </span>
-                            <span style={{
-                                fontFamily: "'Syne',sans-serif", fontWeight: 700,
-                                fontSize: "0.52rem", letterSpacing: "0.08em", textTransform: "uppercase",
-                                color: paused ? C.coral : C.inkSoft,
-                                opacity: paused ? 1 : 0.45,
-                                transition: "all 0.35s",
-                            }}>
-                                {paused ? "Resume" : "Pause"}
-                            </span>
-                        </div>
+
 
                         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.2rem", position: "relative", zIndex: 2 }}>
                             <div style={{ width: 52, height: 52, borderRadius: 14, background: cur.iconBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0, animation: iconFloat ? "svcIconFloat 3s ease infinite" : "none" }}>{cur.icon}</div>
@@ -260,14 +232,35 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
 
                         <div className="svc-panel-bottom" style={{ position: "relative", zIndex: 2 }}>
                             <div style={{ flex: 1, minWidth: 120 }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
-                                    <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.62rem", fontWeight: 700, color: C.inkSoft, letterSpacing: "0.1em", textTransform: "uppercase" }}>{active + 1} / {SERVICES.length}</span>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+                                    <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.62rem", fontWeight: 700, color: C.inkSoft, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                                        {active + 1} / {SERVICES.length}
+                                    </span>
 
+                                    {/* ── hint badge inline above progress bar ── */}
+                                    <div style={{
+                                        display: "flex", alignItems: "center", gap: "0.3rem",
+                                        background: paused ? "rgba(255,60,40,0.10)" : "rgba(107,96,128,0.07)",
+                                        border: `1px solid ${paused ? "rgba(255,60,40,0.25)" : "rgba(107,96,128,0.12)"}`,
+                                        borderRadius: 50, padding: "0.2rem 0.55rem 0.2rem 0.4rem",
+                                        transition: "all 0.35s ease",
+                                        animation: paused ? "none" : "hintPulse 3s ease infinite",
+                                        pointerEvents: "none",
+                                    }}>
+                                        <span style={{ fontSize: "0.5rem", color: paused ? C.coral : C.inkSoft, opacity: paused ? 1 : 0.5, transition: "all 0.35s", lineHeight: 1 }}>
+                                            {paused ? "▶" : "⏸"}
+                                        </span>
+                                        <span style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.48rem", letterSpacing: "0.08em", textTransform: "uppercase", color: paused ? C.coral : C.inkSoft, opacity: paused ? 1 : 0.45, transition: "all 0.35s" }}>
+                                            {paused ? "Resume" : "Pause"}
+                                        </span>
+                                    </div>
                                 </div>
+
                                 <div style={{ height: 2, background: C.creamDark, borderRadius: 2, overflow: "hidden" }}>
                                     <div key={`${animKey}-${paused}`} style={{ height: "100%", background: "linear-gradient(90deg, #FF3C28, #FF8C00)", borderRadius: 2, transformOrigin: "left", boxShadow: "0 0 6px rgba(255,60,40,0.5)", animation: paused ? "none" : "qg-prog 5s linear forwards" }} />
                                 </div>
                             </div>
+
                             <button data-hover onClick={(e) => { e.stopPropagation(); setPage("Contact"); }}
                                 onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(255,60,40,0.4)"; }}
                                 onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 6px 20px rgba(255,60,40,0.3)"; }}

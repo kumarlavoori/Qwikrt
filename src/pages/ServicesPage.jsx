@@ -187,9 +187,46 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
                         ))}
                     </div>
 
-                    <div className="svc-explorer-panel" key={animKey} style={{ backgroundImage: "radial-gradient(circle at 88% 10%, rgba(255,60,40,0.05) 0%, transparent 45%), radial-gradient(circle at 8% 88%, rgba(61,26,120,0.05) 0%, transparent 45%)" }}>
+                    <div className="svc-explorer-panel" key={animKey}
+                        onClick={() => setPaused(v => !v)}
+                        style={{
+                            cursor: "none",
+                            userSelect: "none",
+                            backgroundImage: "radial-gradient(circle at 88% 10%, rgba(255,60,40,0.05) 0%, transparent 45%), radial-gradient(circle at 8% 88%, rgba(61,26,120,0.05) 0%, transparent 45%)"
+                        }}>
                         <ScanLine />
                         <div style={{ position: "absolute", top: "-1rem", right: "1.5rem", fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(5rem,10vw,9rem)", color: C.purple, opacity: 0.04, lineHeight: 1, userSelect: "none", pointerEvents: "none" }}>{cur.num}</div>
+
+                        {/* ── Pause/Play hint badge ── */}
+                        <div style={{
+                            position: "absolute", top: "1rem", right: "1rem",
+                            zIndex: 4, display: "flex", alignItems: "center", gap: "0.35rem",
+                            background: paused ? "rgba(255,60,40,0.10)" : "rgba(107,96,128,0.07)",
+                            border: `1px solid ${paused ? "rgba(255,60,40,0.25)" : "rgba(107,96,128,0.12)"}`,
+                            borderRadius: 50, padding: "0.28rem 0.65rem 0.28rem 0.5rem",
+                            transition: "all 0.35s ease",
+                            animation: paused ? "none" : "hintPulse 3s ease infinite",
+                            pointerEvents: "none",   // panel's own onClick handles it
+                        }}>
+                            <span style={{
+                                fontSize: "0.55rem",
+                                color: paused ? C.coral : C.inkSoft,
+                                opacity: paused ? 1 : 0.5,
+                                transition: "all 0.35s",
+                                lineHeight: 1,
+                            }}>
+                                {paused ? "▶" : "⏸"}
+                            </span>
+                            <span style={{
+                                fontFamily: "'Syne',sans-serif", fontWeight: 700,
+                                fontSize: "0.52rem", letterSpacing: "0.08em", textTransform: "uppercase",
+                                color: paused ? C.coral : C.inkSoft,
+                                opacity: paused ? 1 : 0.45,
+                                transition: "all 0.35s",
+                            }}>
+                                {paused ? "Resume" : "Pause"}
+                            </span>
+                        </div>
 
                         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.2rem", position: "relative", zIndex: 2 }}>
                             <div style={{ width: 52, height: 52, borderRadius: 14, background: cur.iconBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0, animation: iconFloat ? "svcIconFloat 3s ease infinite" : "none" }}>{cur.icon}</div>
@@ -225,13 +262,13 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
                             <div style={{ flex: 1, minWidth: 120 }}>
                                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
                                     <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.62rem", fontWeight: 700, color: C.inkSoft, letterSpacing: "0.1em", textTransform: "uppercase" }}>{active + 1} / {SERVICES.length}</span>
-                                    <button data-hover onClick={() => setPaused(v => !v)} style={{ background: "none", border: "none", cursor: "none", fontFamily: "'Syne',sans-serif", fontSize: "0.62rem", fontWeight: 700, color: C.inkSoft, letterSpacing: "0.08em", textTransform: "uppercase" }}>{paused ? "▶ Resume" : "⏸ Pause"}</button>
+
                                 </div>
                                 <div style={{ height: 2, background: C.creamDark, borderRadius: 2, overflow: "hidden" }}>
                                     <div key={`${animKey}-${paused}`} style={{ height: "100%", background: "linear-gradient(90deg, #FF3C28, #FF8C00)", borderRadius: 2, transformOrigin: "left", boxShadow: "0 0 6px rgba(255,60,40,0.5)", animation: paused ? "none" : "qg-prog 5s linear forwards" }} />
                                 </div>
                             </div>
-                            <button data-hover onClick={() => setPage("Contact")}
+                            <button data-hover onClick={(e) => { e.stopPropagation(); setPage("Contact"); }}
                                 onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(255,60,40,0.4)"; }}
                                 onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 6px 20px rgba(255,60,40,0.3)"; }}
                                 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.85rem", background: C.coral, color: "#fff", border: "none", padding: "0.85rem 2rem", borderRadius: 50, cursor: "none", transition: "all 0.25s", whiteSpace: "nowrap", boxShadow: "0 6px 20px rgba(255,60,40,0.3)", display: "inline-flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
@@ -677,6 +714,7 @@ export default function ServicesPage({ setPage, targetService, onServiceHandled 
                 @keyframes svcScanLine { 0%{top:-1px;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:101%;opacity:0} }
                 @keyframes svcIconFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
                 @keyframes qg-prog { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+                @keyframes hintPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.55;transform:scale(0.96)} }
             `}</style>
         </div>
     );

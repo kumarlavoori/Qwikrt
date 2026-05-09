@@ -515,15 +515,6 @@ function HeroServicePanel() {
 
 /* ════════════ HOME PAGE ════════════ */
 function HomePage({ setPage, goToService }) {
-    const [screenW, setScreenW] = useState(
-        typeof window !== "undefined" ? window.innerWidth : 1200
-    );
-    useEffect(() => {
-        const h = () => setScreenW(window.innerWidth);
-        window.addEventListener("resize", h);
-        return () => window.removeEventListener("resize", h);
-    }, []);
-    const isMobile = screenW < 768;
     const MQ1 = ["Web Development", "UI/UX Design", "App Development", "E-Commerce", "WordPress", "Real Estate Tech", "SEO & Growth"];
     const MQ2 = ["Fast Delivery", "Pixel Perfect", "Clean Code", "Mobile First", "SEO Ready", "Full Support", "Scalable"];
     const MQ3 = ["React", "Next.js", "Django", "Tailwind", "WordPress", "PostgreSQL", "Flutter", "Figma"];
@@ -561,8 +552,7 @@ function HomePage({ setPage, goToService }) {
                     flexDirection: "column",
                     position: "relative",
                     overflow: "hidden",
-                    minHeight: isMobile ? "auto" : "calc(100vh - 70px)",
-                    padding: isMobile ? "4rem 5% 3.5rem" : "0",
+                    minHeight: "calc(100vh - 70px)",
                     backgroundImage: "radial-gradient(circle at 92% 8%, rgba(255,60,40,0.18) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(107,63,168,0.22), transparent 50%)",
                 }}>
                     <div style={{ position: "absolute", top: "-5rem", left: "-5rem", width: 420, height: 420, borderRadius: "50%", background: `radial-gradient(circle,${C.purpleMid} 0%,transparent 65%)`, opacity: 0.45, pointerEvents: "none" }} />

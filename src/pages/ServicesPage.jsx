@@ -152,7 +152,7 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
                 <Reveal><STag>Everything We Build</STag></Reveal>
                 <Reveal delay={0.08}>
                     <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(2.2rem,5vw,4rem)", lineHeight: 0.95, color: C.ink }}>
-                        SIX SERVICES.<br /><span style={{ color: C.coral }}>ONE STUDIO.</span>
+                        SIX SERVICES.<br /><span style={{ color: C.coral }}>ONE CREATIVE SPACE.</span>
                     </h2>
                 </Reveal>
             </div>

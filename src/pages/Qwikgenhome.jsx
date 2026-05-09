@@ -546,7 +546,7 @@ function HomePage({ setPage, goToService }) {
 
             {/* ══ HERO ══ */}
             <div className="hero-grid">
-                <div style={{ background: C.purpleDark, display: "flex", flexDirection: "column", position: "relative", overflow: "hidden", minHeight: "calc(100vh - 70px)" }}>
+                <div className="hero-left-col" style={{ background: C.purpleDark, display: "flex", flexDirection: "column", position: "relative", overflow: "hidden", minHeight: "calc(100vh - 70px)" }}>
                     <div style={{ position: "absolute", top: "-5rem", left: "-5rem", width: 420, height: 420, borderRadius: "50%", background: `radial-gradient(circle,${C.purpleMid} 0%,transparent 65%)`, opacity: 0.45, pointerEvents: "none" }} />
                     <div style={{ position: "absolute", bottom: 0, right: 0, width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle,rgba(255,60,40,0.07) 0%,transparent 65%)", pointerEvents: "none" }} />
                     <div style={{ position: "absolute", left: 0, top: "15%", bottom: "15%", width: 3, background: "linear-gradient(180deg,transparent,#FF3C28,transparent)", borderRadius: "0 2px 2px 0" }} />

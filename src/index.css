@@ -582,6 +582,16 @@ body {
     padding: 2.8rem 4% !important;
   }
 
+  .hero-grid>div:first-child {
+    min-height: auto !important;
+  }
+
+  .hero-left-inner {
+    justify-content: flex-start !important;
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+
   .hero-left-inner {
     padding: 2rem 5% 4rem 5%;
     min-height: auto;

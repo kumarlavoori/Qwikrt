@@ -543,7 +543,7 @@ body {
   }
 
   .hero-left-inner {
-    min-height: 55vw;
+    min-height: auto;
     padding: 3rem 6% 4rem;
   }
 
@@ -595,8 +595,8 @@ body {
   }
 
   .hero-left-inner {
+    min-height: auto !important;
     padding: 2rem 5% 4rem 5%;
-    min-height: auto;
   }
 
   .hero-hl-size {

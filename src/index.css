@@ -210,6 +210,7 @@ body {
   }
 }
 
+
 @media (max-width: 767px) {
   .hero-svc-panel {
     min-height: 480px;
@@ -576,6 +577,25 @@ body {
     gap: 24px;
   }
 }
+
+/* ── Desktop site mode: force side-by-side at 900–1023px ── */
+@media (min-width: 900px) and (max-width: 1023px) {
+  .hero-grid {
+    grid-template-columns: 52% 48% !important;
+    min-height: calc(100vh - 70px);
+  }
+
+  .hero-left-inner {
+    min-height: auto !important;
+    padding: 3rem 6% 3rem !important;
+    justify-content: center !important;
+  }
+
+  .hero-svc-panel {
+    min-height: calc(100vh - 70px) !important;
+  }
+}
+
 
 @media (max-width: 767px) {
   .qg-section {

@@ -580,6 +580,10 @@ body {
 
 
 @media (max-width: 767px) {
+  .hero-grid {
+    min-height: auto !important;
+  }
+
   .qg-section {
     padding: 2.8rem 4% !important;
   }

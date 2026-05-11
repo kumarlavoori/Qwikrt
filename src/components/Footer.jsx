@@ -299,7 +299,7 @@ export default function Footer({ setPage, goToService }) {
                             height={36}
                             style={{ objectFit: "contain", flexShrink: 0 }}
                             onError={(e) => {
-                                // fallback SVG if logo.png not found
+
                                 e.currentTarget.style.display = "none";
                                 e.currentTarget.nextSibling.style.display = "flex";
                             }}

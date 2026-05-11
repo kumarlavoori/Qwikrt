@@ -514,7 +514,19 @@ function HeroServicePanel() {
 }
 
 /* ════════════ HOME PAGE ════════════ */
+function useWindowWidth() {
+    const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+    useEffect(() => {
+        const h = () => setW(window.innerWidth);
+        window.addEventListener("resize", h);
+        return () => window.removeEventListener("resize", h);
+    }, []);
+    return w;
+}
+
 function HomePage({ setPage, goToService }) {
+    const width = useWindowWidth();
+    const sm = width <= 767;
     const MQ1 = ["Web Development", "UI/UX Design", "App Development", "E-Commerce", "WordPress", "Real Estate Tech", "SEO & Growth"];
     const MQ2 = ["Fast Delivery", "Pixel Perfect", "Clean Code", "Mobile First", "SEO Ready", "Full Support", "Scalable"];
     const MQ3 = ["React", "Next.js", "Django", "Tailwind", "WordPress", "PostgreSQL", "Flutter", "Figma"];
@@ -546,7 +558,7 @@ function HomePage({ setPage, goToService }) {
 
             {/* ══ HERO ══ */}
             <div className="hero-grid">
-                <div style={{ background: C.purpleDark, display: "flex", flexDirection: "column", position: "relative", overflow: "hidden", minHeight: "calc(100vh - 70px)" }}>
+                <div style={{ background: C.purpleDark, display: "flex", flexDirection: "column", position: "relative", overflow: "hidden", minHeight: sm ? "auto" : "calc(100vh - 70px)" }}>
                     <div style={{ position: "absolute", top: "-5rem", left: "-5rem", width: 420, height: 420, borderRadius: "50%", background: `radial-gradient(circle,${C.purpleMid} 0%,transparent 65%)`, opacity: 0.45, pointerEvents: "none" }} />
                     <div style={{ position: "absolute", bottom: 0, right: 0, width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle,rgba(255,60,40,0.07) 0%,transparent 65%)", pointerEvents: "none" }} />
                     <div style={{ position: "absolute", left: 0, top: "15%", bottom: "15%", width: 3, background: "linear-gradient(180deg,transparent,#FF3C28,transparent)", borderRadius: "0 2px 2px 0" }} />
@@ -554,7 +566,7 @@ function HomePage({ setPage, goToService }) {
                         <span style={{ fontFamily: "'Syne',sans-serif", fontSize: "0.58rem", fontWeight: 700, color: "rgba(247,243,236,0.25)", letterSpacing: "0.22em", textTransform: "uppercase", writingMode: "vertical-rl" }}>SCROLL DOWN</span>
                         <div style={{ width: 1, height: 60, background: "linear-gradient(180deg, rgba(247,243,236,0.15), #FF3C28)", borderRadius: 2 }} />
                     </div>
-                    <div className="hero-left-inner" style={{ justifyContent: "center", position: "relative" }}>
+                    <div className="hero-left-inner" style={{ justifyContent: sm ? "flex-start" : "center", position: "relative" }}>
                         <div className="hero-qg-ghost" style={{ position: "absolute", right: "3rem", top: "50%", transform: "translateY(-50%)", fontFamily: "'Bebas Neue',sans-serif", lineHeight: 0.82, userSelect: "none", pointerEvents: "none", zIndex: 0, display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                             {["QWIK", "GEN"].map((w) => (
                                 <div key={w} style={{ fontSize: "clamp(5rem,13vw,12rem)", color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.11)", letterSpacing: "0.04em" }}>{w}</div>

@@ -297,7 +297,7 @@ export default function ContactPage() {
             `*Services:* ${serviceNames}`,
             form.message ? `*Message:* ${form.message}` : null,
         ].filter(Boolean).join("\n");
-        const waURL = `https://wa.me/919876543210?text=${encodeURIComponent(lines)}`;
+        const waURL = `https://wa.me/919398198719?text=${encodeURIComponent(lines)}`;
         setTimeout(() => { setSending(false); setSubmitted(true); window.open(waURL, "_blank"); }, 900);
     };
 
@@ -555,8 +555,8 @@ export default function ContactPage() {
                                     position: "relative", zIndex: 1,
                                     marginBottom: sm ? "1rem" : "1.3rem",
                                 }}>
-                                    <InfoCard icon="📧" label="Email" value="hello@studio.com" sub="Reply within 24 hours" href="mailto:hello@studio.com" sm={sm} />
-                                    <InfoCard icon="📱" label="WhatsApp" value="+91 98765 43210" sub="Quick chats & project briefs" href="https://wa.me/919876543210" sm={sm} />
+                                    <InfoCard icon="📧" label="Email" value="qwikgenitsolution@gmail.com" sub="Reply within 24 hours" href="mailto:qwikgenitsolutions@gmail.com" sm={sm} />
+                                    <InfoCard icon="📱" label="WhatsApp" value="+91 93981 98719" sub="Quick chats & project briefs" href="https://wa.me/919398198719" sm={sm} />
                                     <InfoCard icon="📍" label="Location" value="SR Nagar, Hyderabad" sub="Telangana, India 500038" sm={sm} />
                                 </div>
 

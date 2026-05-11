@@ -555,7 +555,7 @@ export default function ContactPage() {
                                     position: "relative", zIndex: 1,
                                     marginBottom: sm ? "1rem" : "1.3rem",
                                 }}>
-                                    <InfoCard icon="📧" label="Email" value="qwikgenitsolution@gmail.com" sub="Reply within 24 hours" href="mailto:qwikgenitsolutions@gmail.com" sm={sm} />
+                                    <InfoCard icon="📧" label="Email" value="qwikgenitsolution@gmail.com" sub="Reply within 24 hours" href="mailto:qwikgenitsolution@gmail.com" sm={sm} />
                                     <InfoCard icon="📱" label="WhatsApp" value="+91 93981 98719" sub="Quick chats & project briefs" href="https://wa.me/919398198719" sm={sm} />
                                     <InfoCard icon="📍" label="Location" value="SR Nagar, Hyderabad" sub="Telangana, India 500038" sm={sm} />
                                 </div>

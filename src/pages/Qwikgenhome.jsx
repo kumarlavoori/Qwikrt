@@ -91,6 +91,7 @@ const Icon = {
     Users: () => <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
     Mail: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>,
     ArrowRight: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>,
+    Brush: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.07" /><path d="M7.07 14.94C5.79 16.2 4 16.5 2.12 18c-.95.77-.54 2.33.49 2.71 1.26.47 2.47-.46 3.65-.46 1.57 0 2.4 1.11 3.44 1.55 1.06.45 2.13-.14 2.4-1.28.36-1.5-.5-2.98-.5-4.52" /></svg>,
 };
 
 /* ════════════ TECH STACK DATA ════════════ */
@@ -110,6 +111,11 @@ const STACK = [
     { label: "MySQL", cat: "Backend" },
     { label: "REST APIs", cat: "Backend" },
     { label: "Figma", cat: "Design" },
+    { label: "Illustrator", cat: "Design" },
+    { label: "Photoshop", cat: "Design" },
+    { label: "InDesign", cat: "Design" },
+    { label: "After Effects", cat: "Design" },
+    { label: "CorelDRAW", cat: "Design" },
     { label: "Flutter", cat: "Mobile" },
     { label: "React Native", cat: "Mobile" },
     { label: "WordPress", cat: "CMS" },
@@ -436,12 +442,12 @@ function HeroServicePanel() {
             strip: "Every detail optimised to reduce cart abandonment and increase revenue.",
         },
         {
-            label: "Real Estate Tech", color: "#FFB300",
-            desc: "Property portals with map search, virtual tours, lead capture, and CRM integration.",
-            features: ["Map Search", "CRM", "Advanced Filters"],
-            tech: ["React", "Next.js", "Python", "Django", "PostgreSQL", "Google Maps", "Mapbox", "PostGIS", "Elasticsearch", "Twilio", "DocuSign", "AWS S3"],
-            badges: ["🗺️ Map View", "🏠 Listings", "📞 CRM"],
-            strip: "Built around how buyers and agents actually search, browse, and close.",
+            label: "Graphic Design", color: "#FFB300",
+            desc: "Bold logos, brand systems, and print-ready assets — every visual crafted to make your brand impossible to ignore.",
+            features: ["Brand Identity", "Print Ready", "Multi-Format"],
+            tech: ["Adobe Illustrator", "Photoshop", "InDesign", "Figma", "After Effects", "Canva Pro", "CorelDRAW", "Brand Guidelines", "Typography Systems", "Colour Theory", "Social Media Kits", "Packaging Design"],
+            badges: ["🎨 Brand Identity", "🖨️ Print Ready", "📐 Vector Art"],
+            strip: "Every visual crafted from scratch — no templates, no stock, just original brand work.",
         },
     ];
 
@@ -538,7 +544,7 @@ function HomePage({ setPage, goToService }) {
         { num: "03", id: "app", name: "App Development", Ico: Icon.Phone, desc: "Cross-platform mobile apps with Flutter and React Native. One codebase, two platforms.", tags: ["Flutter", "React Native", "Firebase", "iOS/Android", "Dart"] },
         { num: "04", id: "wp", name: "WordPress & CMS", Ico: Icon.Zap, desc: "Custom WordPress themes, plugins, and headless CMS setups for editorial teams.", tags: ["WordPress", "WooCommerce", "ACF Pro", "Headless CMS", "REST API"] },
         { num: "05", id: "ecom", name: "E-Commerce Solutions", Ico: Icon.Cart, desc: "High-converting stores with WooCommerce and Stripe integration, built for growth.", tags: ["WooCommerce", "Shopify", "Stripe", "Razorpay", "Inventory", "Analytics"] },
-        { num: "06", id: "re", name: "Real Estate Platforms", Ico: Icon.Build, desc: "Property listings, virtual tours, CRM integrations — the complete real estate tech stack.", tags: ["Google Maps", "PostGIS", "CRM", "Lead Capture", "Django", "Elasticsearch"] },
+        { num: "06", id: "gd", name: "Graphic Design", Ico: Icon.Brush, desc: "Bold logos, brand identities, marketing materials, and print-ready assets crafted to make your brand unforgettable.", tags: ["Illustrator", "Brand Identity", "Typography", "Print Design", "Social Kits", "Figma"] },
     ];
 
     const [activeCard, setActiveCard] = useState(null);
@@ -548,7 +554,7 @@ function HomePage({ setPage, goToService }) {
         { icon: "💼", name: "Finance & FinTech", desc: "Secure dashboards, payment integrations, and data-heavy SaaS platforms built to scale.", tag: "Web App" },
         { icon: "🏥", name: "Health & Wellness", desc: "Booking systems, patient portals, and telehealth apps built for trust and ease.", tag: "App + Web" },
         { icon: "🎓", name: "Education & EdTech", desc: "LMS platforms, course portals, and student apps that make learning genuinely click.", tag: "Platform" },
-        { icon: "🏗️", name: "Real Estate", desc: "Property listing sites, virtual tours, lead capture, and CRM connectors that close deals.", tag: "Web + App" },
+        { icon: "🎨", name: "Creative Agencies", desc: "Bespoke design tooling, portfolio sites, brand microsites, and client-facing presentation decks.", tag: "Web + Design" },
         { icon: "🚚", name: "Logistics & Delivery", desc: "Tracking dashboards, driver apps, and customer portals — the complete ops stack.", tag: "Mobile + Web" },
         { icon: "📰", name: "Media & Publishing", desc: "Custom WordPress and headless CMS setups for editorial teams demanding speed.", tag: "WordPress" },
         { icon: "🍔", name: "Food & Hospitality", desc: "Table booking, online ordering, menu management — seamless digital dining.", tag: "App + Web" },
@@ -633,7 +639,7 @@ function HomePage({ setPage, goToService }) {
                 <div style={{ padding: "2rem 5% 3rem" }}>
                     <div className="svc-grid">
                         {SERVICES.map((s, i) => (
-                            <Reveal key={s.num} delay={(i % 3) * 0.06}>
+                            <Reveal key={s.num} delay={(i % 3) * 0.06} style={{ height: "100%", display: "flex" }}>
                                 <SvcCard
                                     s={s}
                                     active={activeCard === i}
@@ -710,15 +716,15 @@ function HomePage({ setPage, goToService }) {
                     <Reveal delay={0.08}><h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(1.8rem,5vw,3.8rem)", color: C.ink }}>Built for Every Sector.</h2></Reveal>
                     <Reveal delay={0.14}><p style={{ color: C.inkSoft, maxWidth: 480, margin: "0.8rem auto 0", lineHeight: 1.7, fontSize: "0.95rem" }}>From emerging startups to growing businesses — we deliver across all verticals with precision and care.</p></Reveal>
                 </div>
-                <div className="ind-grid" style={{ gap: "1.1rem" }}>
-                    {INDUSTRIES.map((ind, i) => (<Reveal key={ind.name} delay={(i % 4) * 0.06}><IndCard {...ind} /></Reveal>))}
+                <div className="ind-grid" style={{ gap: "1.1rem", alignItems: "stretch" }}>
+                    {INDUSTRIES.map((ind, i) => (<Reveal key={ind.name} delay={(i % 4) * 0.06} style={{ height: "100%", display: "flex" }} > <IndCard {...ind} /></Reveal>))}
                 </div>
-            </section>
+            </section >
 
             {/* ══ MARQUEE 3 ══ */}
-            <Marquee items={MQ3} coral />
+            < Marquee items={MQ3} coral />
 
-        </div>
+        </div >
     );
 }
 

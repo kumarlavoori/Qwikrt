@@ -168,6 +168,7 @@ body {
   box-shadow: 0 4px 18px rgba(61, 26, 120, 0.06);
   transition: all 0.3s ease;
   min-height: 210px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

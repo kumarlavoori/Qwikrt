@@ -100,12 +100,12 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
             deliverables: ["Custom theme from scratch", "Plugin development if needed", "Admin training session", "SEO plugin setup", "Speed optimisation & CDN"],
         },
         {
-            id: "re", num: "06", name: "Real Estate Platforms", icon: "🏗️",
-            tag: "Portals & CRM",
-            iconBg: "rgba(255,60,40,0.06)",
-            desc: "Full-stack property portals with advanced search, map-based listing views, virtual tours, and CRM integrations. Every feature designed around how buyers and agents actually behave.",
-            techs: ["React", "Next.js", "Django", "PostgreSQL", "Google Maps API", "Mapbox", "PostGIS", "Elasticsearch", "CRM Integration", "Twilio SMS", "DocuSign API", "Virtual Tour Embed", "Lead Capture Forms", "Advanced Filters", "AWS S3"],
-            deliverables: ["Property listing portal", "Advanced search & map view", "CRM & lead capture integration", "Virtual tour embed support", "Agent & admin dashboard"],
+            id: "gd", num: "06", name: "Graphic Design", icon: "✏️",
+            tag: "Branding & Visual Identity",
+            iconBg: "rgba(255,186,8,0.08)",
+            desc: "Bold logos, full brand identities, marketing materials, and print-ready assets — every visual crafted to make your brand instantly recognisable and impossible to ignore.",
+            techs: ["Adobe Illustrator", "Adobe Photoshop", "Adobe InDesign", "Figma", "After Effects", "Canva Pro", "CorelDRAW", "Brand Guidelines", "Typography Systems", "Colour Theory", "Print Design", "Social Media Kits", "Pitch Deck Design", "Packaging Design", "Vector Art"],
+            deliverables: ["Logo & brand identity system", "Brand style guide (colours, fonts, rules)", "Social media design kit", "Marketing & print collateral", "Full source files in all formats"],
         },
     ];
 
@@ -553,8 +553,8 @@ export default function ServicesPage({ setPage, targetService, onServiceHandled 
     const sm = screenW < 768;
     const md = screenW >= 768 && screenW < 1024;
 
-    const MQ1 = ["Web Development", "UI/UX Design", "App Development", "E-Commerce", "WordPress & CMS", "Real Estate Tech", "Fast Delivery", "Pixel Perfect", "Clean Code", "Mobile First"];
-    const MQ2 = ["Web Dev", "UI/UX", "App Dev", "E-Commerce", "WordPress", "Real Estate", "Clean Code", "Fast Launch", "Pixel Perfect"];
+    const MQ1 = ["Web Development", "UI/UX Design", "App Development", "E-Commerce", "WordPress & CMS", "Graphic Design", "Fast Delivery", "Pixel Perfect", "Clean Code", "Mobile First"];
+    const MQ2 = ["Web Dev", "UI/UX", "App Dev", "E-Commerce", "WordPress", "Graphic Design", "Clean Code", "Fast Launch", "Pixel Perfect"];
 
     return (
         <div style={{ width: "100%", minWidth: 0, paddingTop: 70 }}>

@@ -262,7 +262,7 @@ export default function ContactPage() {
         { label: "App Development", icon: "📱" },
         { label: "E-Commerce", icon: "🛒" },
         { label: "WordPress & CMS", icon: "⚡" },
-        { label: "Real Estate", icon: "🏗️" },
+        { label: "Graphic Design", icon: "✏️" },
     ];
     const SOCIALS = [
         { label: "Instagram", icon: "📸", color: "#E1306C", href: "https://instagram.com" },

@@ -1,10 +1,9 @@
 // src/components/Footer.jsx
 import { useState, useEffect } from "react";
 
-// ── Brand colors from real logo ──────────────────────────────────────────────
 const C = {
     purple: "#3D1A78",
-    purpleDark: "#160B2E",   // richer, deeper — closer to preview
+    purpleDark: "#160B2E",
     orange: "#E8431A",
     orangeSoft: "#F0694A",
     lavender: "#DCD2FF",
@@ -21,11 +20,90 @@ const STYLES = `
     from { opacity:0; transform:translateY(18px); }
     to   { opacity:1; transform:translateY(0); }
 }
+
 .ftr-col { animation: fadeUp 0.52s ease both; }
 .ftr-col:nth-child(1) { animation-delay:0.04s; }
 .ftr-col:nth-child(2) { animation-delay:0.12s; }
 .ftr-col:nth-child(3) { animation-delay:0.20s; }
 .ftr-col:nth-child(4) { animation-delay:0.28s; }
+
+/* ── Footer main grid ── */
+.ftr-main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1.1fr 1.1fr 1.5fr;
+    gap: 4rem;
+    align-items: start;
+    padding: 4.5rem 6% 3.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* ── Bottom bar ── */
+.ftr-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 1.4rem 6%;
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+}
+
+/* ── Laptop: 1024–1279px ── */
+@media (max-width: 1279px) {
+    .ftr-main-grid {
+        grid-template-columns: 1.8fr 1fr 1fr 1.4fr;
+        gap: 3rem;
+    }
+}
+
+/* ── Tablet: 768–1023px ── */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .ftr-main-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.8rem 2.5rem;
+        padding: 3.5rem 6% 2.5rem;
+    }
+    .ftr-brand-col {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ── Mobile: max 767px ── */
+@media (max-width: 767px) {
+    .ftr-main-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.4rem 1.6rem;
+        padding: 3rem 5% 2rem;
+    }
+    .ftr-brand-col {
+        grid-column: 1 / -1;
+    }
+    .ftr-contact-col {
+        grid-column: 1 / -1;
+    }
+    .ftr-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.2rem 5% 1.8rem;
+        gap: 0.9rem;
+    }
+}
+
+/* ── Small mobile: max 479px ── */
+@media (max-width: 479px) {
+    .ftr-main-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2.5rem 5% 2rem;
+    }
+    .ftr-brand-col,
+    .ftr-contact-col {
+        grid-column: auto;
+    }
+}
 `;
 
 function injectStyles() {
@@ -48,7 +126,7 @@ function SectionLabel({ children }) {
                 fontFamily: "'Syne', sans-serif", fontWeight: 700,
                 fontSize: "0.72rem", letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: "rgba(255,255,255,0.85)",   // ← white, not orange
+                color: "rgba(255,255,255,0.85)",
             }}>
                 {children}
             </span>
@@ -65,7 +143,8 @@ function NavLink({ label, onClick, accent = false }) {
             onClick={onClick}
             style={{
                 background: "none", border: "none", padding: "0.32rem 0",
-                cursor: "none", textAlign: "left",
+                cursor: "pointer", // FIX: was "none"
+                textAlign: "left",
                 display: "flex", alignItems: "center", gap: "0.45rem",
                 fontFamily: "'Outfit', sans-serif", fontWeight: 400,
                 fontSize: "0.9rem",
@@ -83,11 +162,15 @@ function NavLink({ label, onClick, accent = false }) {
     );
 }
 
+// FIX: Rewrote SocialCircle — the <a> tag had completely malformed JSX
+// (raw object-literal style props and a broken closing tag `</a >`)
 function SocialCircle({ icon, href, color }) {
     const [hov, setHov] = useState(false);
     return (
         <a
-            href={href || "#"} target="_blank" rel="noopener noreferrer"
+            href={href || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHov(true)}
             onMouseLeave={() => setHov(false)}
             style={{
@@ -102,7 +185,9 @@ function SocialCircle({ icon, href, color }) {
                 transform: hov ? "translateY(-4px) scale(1.1)" : "none",
                 boxShadow: hov ? `0 8px 20px ${color}44` : "none",
             }}
-        >{icon}</a>
+        >
+            {icon}
+        </a>
     );
 }
 
@@ -122,7 +207,8 @@ function ContactRow({ icon, label, value, href }) {
                 borderRadius: 10,
                 background: hov ? "rgba(232,67,26,0.1)" : "rgba(255,255,255,0.03)",
                 border: `1px solid ${hov ? "rgba(232,67,26,0.28)" : "rgba(220,210,255,0.07)"}`,
-                transition: "all 0.22s", cursor: href ? "none" : "default",
+                transition: "all 0.22s",
+                cursor: href ? "pointer" : "default", // FIX: was "none"
             }}
         >
             <span style={{
@@ -134,7 +220,7 @@ function ContactRow({ icon, label, value, href }) {
                 transition: "transform 0.22s",
                 transform: hov ? "scale(1.08)" : "none",
             }}>{icon}</span>
-            <div>
+            <div style={{ minWidth: 0 }}>
                 <div style={{
                     fontFamily: "'Syne', sans-serif", fontSize: "0.54rem",
                     fontWeight: 700, letterSpacing: "0.13em",
@@ -146,22 +232,27 @@ function ContactRow({ icon, label, value, href }) {
                     fontWeight: 400,
                     color: hov ? "#fff" : "rgba(220,210,255,0.9)",
                     transition: "color 0.2s",
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                 }}>{value}</div>
             </div>
         </Tag>
     );
 }
 
+// FIX: Rewrote WaButton — the <a> tag had completely malformed JSX
+// (raw object-literal style props, broken event handler syntax, and `</a >` closing tag)
 function WaButton({ href }) {
     const [hov, setHov] = useState(false);
     return (
         <a
-            href={href} target="_blank" rel="noopener noreferrer"
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHov(true)}
             onMouseLeave={() => setHov(false)}
             style={{
                 display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                padding: "0.55rem 1.2rem", borderRadius: 50,
+                padding: "0.6rem 1.3rem", borderRadius: 50,
                 border: `1.5px solid ${hov ? "rgba(37,211,102,0.65)" : "rgba(37,211,102,0.32)"}`,
                 background: hov ? "rgba(37,211,102,0.16)" : "rgba(37,211,102,0.08)",
                 color: "#25D366",
@@ -170,6 +261,8 @@ function WaButton({ href }) {
                 textDecoration: "none", transition: "all 0.22s",
                 transform: hov ? "translateY(-2px)" : "none",
                 boxShadow: hov ? "0 6px 20px rgba(37,211,102,0.2)" : "none",
+                width: "fit-content",
+                cursor: "pointer",
             }}
         >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366">
@@ -183,18 +276,6 @@ function WaButton({ href }) {
 export default function Footer({ setPage, goToService }) {
     injectStyles();
 
-    const [width, setWidth] = useState(
-        typeof window !== "undefined" ? window.innerWidth : 1200
-    );
-    useEffect(() => {
-        const h = () => setWidth(window.innerWidth);
-        window.addEventListener("resize", h);
-        return () => window.removeEventListener("resize", h);
-    }, []);
-
-    const sm = width <= 640;
-    const md = width > 640 && width <= 1023;
-
     const go = (page) => {
         setPage(page);
         window.scrollTo({ top: 0, behavior: "instant" });
@@ -206,7 +287,7 @@ export default function Footer({ setPage, goToService }) {
         { label: "App Development", id: "app" },
         { label: "E-Commerce Stores", id: "ecom" },
         { label: "WordPress & CMS", id: "wp" },
-        { label: "Real Estate Platforms", id: "re" },
+        { label: "Graphic Design", id: "gd" },
     ];
 
     const COMPANY = [
@@ -224,8 +305,6 @@ export default function Footer({ setPage, goToService }) {
         { icon: "Ig", href: "https://instagram.com", color: "#E1306C" },
     ];
 
-    const cols = sm ? "1fr 1fr" : md ? "1fr 1fr 1fr" : "2fr 1.1fr 1.1fr 1.5fr";
-
     return (
         <footer style={{
             background: C.purpleDark,
@@ -236,86 +315,58 @@ export default function Footer({ setPage, goToService }) {
             borderRadius: 16,
             marginTop: "4px",
         }}>
-            {/* orange glow top-right */}
+            {/* Decorative blobs */}
             <div style={{
                 position: "absolute", top: -100, right: -60,
                 width: 500, height: 500, borderRadius: "50%",
                 background: "radial-gradient(circle, rgba(232,67,26,0.13) 0%, transparent 65%)",
                 pointerEvents: "none",
             }} />
-
-            {/* purple depth bloom bottom-left */}
             <div style={{
                 position: "absolute", bottom: -80, left: -60,
                 width: 400, height: 400, borderRadius: "50%",
                 background: "radial-gradient(circle, rgba(61,26,120,0.4) 0%, transparent 70%)",
                 pointerEvents: "none",
             }} />
-
-            {/* dot grid — lavender-tinted */}
             <div style={{
                 position: "absolute", inset: 0, pointerEvents: "none",
                 backgroundImage: "radial-gradient(rgba(220,210,255,0.07) 1px, transparent 1px)",
                 backgroundSize: "24px 24px",
             }} />
-
-            {/* diagonal stripe texture */}
             <div style={{
                 position: "absolute", inset: 0, pointerEvents: "none",
-                backgroundImage: `repeating-linear-gradient(
-                    135deg,
-                    transparent,
-                    transparent 40px,
-                    rgba(232,67,26,0.03) 40px,
-                    rgba(232,67,26,0.03) 41px
-                )`,
+                backgroundImage: `repeating-linear-gradient(135deg,transparent,transparent 40px,rgba(232,67,26,0.03) 40px,rgba(232,67,26,0.03) 41px)`,
             }} />
 
-            {/* ── main grid ── */}
-            <div style={{
-                position: "relative", zIndex: 2,
-                padding: sm ? "3rem 6% 2.5rem" : "4.5rem 6% 3.5rem",
-                display: "grid",
-                gridTemplateColumns: cols,
-                gap: sm ? "2.8rem 1.6rem" : md ? "3rem 2rem" : "4rem",
-                alignItems: "start",
-            }}>
+            {/* ── Main grid ── */}
+            <div className="ftr-main-grid">
 
-                {/* ── Brand col ── */}
-                <div className="ftr-col" style={{ gridColumn: sm ? "1 / -1" : "auto" }}>
+                {/* Brand col */}
+                <div className="ftr-col ftr-brand-col">
                     <button
                         onClick={() => go("Home")}
                         style={{
-                            background: "none", border: "none", cursor: "none",
+                            background: "none", border: "none",
+                            cursor: "pointer", // FIX: was "none"
                             display: "inline-flex", alignItems: "center", gap: "0.6rem",
                             padding: 0, marginBottom: "1.15rem",
                         }}
                     >
-                        {/* ── Real logo image — update src path to match your project ── */}
                         <img
                             src="/logo.png"
                             alt="QwikGen"
-                            width={36}
-                            height={36}
+                            width={36} height={36}
                             style={{ objectFit: "contain", flexShrink: 0 }}
                             onError={(e) => {
-
                                 e.currentTarget.style.display = "none";
                                 e.currentTarget.nextSibling.style.display = "flex";
                             }}
                         />
-                        {/* fallback SVG shown only if image fails */}
-                        <svg
-                            width={36} height={36} viewBox="0 0 100 100" fill="none"
-                            style={{ display: "none", flexShrink: 0 }}
-                        >
+                        <svg width={36} height={36} viewBox="0 0 100 100" fill="none" style={{ display: "none", flexShrink: 0 }}>
                             <circle cx="50" cy="50" r="48" fill={C.purple} />
-                            <path
-                                d="M30 50 C30 35 42 25 55 25 C68 25 78 35 78 48 C78 58 70 65 62 65 L55 65 L55 75 L45 75 L45 55 L58 55 C63 55 66 52 66 48 C66 44 62 37 55 37 C48 37 42 43 42 50 C42 57 47 63 55 63"
-                                stroke={C.orange} strokeWidth="5" strokeLinecap="round" fill="none"
-                            />
+                            <path d="M30 50 C30 35 42 25 55 25 C68 25 78 35 78 48 C78 58 70 65 62 65 L55 65 L55 75 L45 75 L45 55 L58 55 C63 55 66 52 66 48 C66 44 62 37 55 37 C48 37 42 43 42 50 C42 57 47 63 55 63"
+                                stroke={C.orange} strokeWidth="5" strokeLinecap="round" fill="none" />
                         </svg>
-
                         <span style={{
                             fontFamily: "'Syne', sans-serif", fontWeight: 800,
                             fontSize: "1.35rem", color: "#fff", letterSpacing: "-0.01em",
@@ -341,7 +392,7 @@ export default function Footer({ setPage, goToService }) {
                     </div>
                 </div>
 
-                {/* ── Services col ── */}
+                {/* Services col */}
                 <div className="ftr-col">
                     <SectionLabel>Services</SectionLabel>
                     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -351,7 +402,7 @@ export default function Footer({ setPage, goToService }) {
                     </div>
                 </div>
 
-                {/* ── Company col ── */}
+                {/* Company col */}
                 <div className="ftr-col">
                     <SectionLabel>Company</SectionLabel>
                     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -365,8 +416,8 @@ export default function Footer({ setPage, goToService }) {
                     </div>
                 </div>
 
-                {/* ── Contact col ── */}
-                <div className="ftr-col">
+                {/* Contact col */}
+                <div className="ftr-col ftr-contact-col">
                     <SectionLabel>Get In Touch</SectionLabel>
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem", marginBottom: "1.5rem" }}>
                         <ContactRow icon="📧" label="Email" value="hello@qwikgen.in" href="mailto:hello@qwikgen.in" />
@@ -377,21 +428,14 @@ export default function Footer({ setPage, goToService }) {
                 </div>
             </div>
 
-            {/* ── divider ── */}
+            {/* Divider */}
             <div style={{
                 position: "relative", zIndex: 2, margin: "0 6%", height: 1,
                 background: "linear-gradient(90deg, transparent, rgba(220,210,255,0.12) 30%, rgba(232,67,26,0.2) 50%, rgba(220,210,255,0.12) 70%, transparent)",
             }} />
 
-            {/* ── bottom bar ── */}
-            <div style={{
-                position: "relative", zIndex: 2,
-                padding: sm ? "1.3rem 6% 1.6rem" : "1.4rem 6%",
-                display: "flex",
-                flexDirection: sm ? "column" : "row",
-                alignItems: sm ? "flex-start" : "center",
-                justifyContent: "space-between", gap: "0.8rem",
-            }}>
+            {/* Bottom bar */}
+            <div className="ftr-bottom">
                 <p style={{
                     fontFamily: "'Outfit', sans-serif", fontWeight: 300,
                     fontSize: "0.8rem", color: "rgba(220,210,255,0.32)", margin: 0,

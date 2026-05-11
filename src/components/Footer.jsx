@@ -440,11 +440,11 @@ export default function Footer({ setPage, goToService }) {
                 <div className="ftr-col ftr-contact-col">
                     <SectionLabel>Get In Touch</SectionLabel>
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem", marginBottom: "1.5rem" }}>
-                        <ContactRow icon="📧" label="Email" value="hello@qwikgen.in" href="mailto:hello@qwikgen.in" />
-                        <ContactRow icon="📱" label="WhatsApp" value="+91 99999 99999" href="https://wa.me/919999999999" />
-                        <ContactRow icon="📍" label="Location" value="Hyderabad, India" href={null} />
+                        <ContactRow icon="📧" label="Email" value="qwikgenitsolution@gmail.com" href="mailto:qwikgenitsolution@gmail.com" />
+                        <ContactRow icon="📱" label="WhatsApp" value="+91 93981 98719" href="https://wa.me/919398198719" />
+                        <ContactRow icon="📍" label="Location" value="SR Nagar, Hyderabad, Telangana, India" href={null} />
                     </div>
-                    <WaButton href="https://wa.me/919999999999" />
+                    <WaButton href="https://wa.me/919398198719" />
                 </div>
             </div>
 

@@ -373,7 +373,7 @@ export default function Footer({ setPage, goToService }) {
                         }}
                     >
                         <img
-                            src="/logo.png"
+                            src="/logo1.png"
                             alt="QwikGen"
                             width={36} height={36}
                             style={{ objectFit: "contain", flexShrink: 0 }}

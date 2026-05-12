@@ -383,39 +383,31 @@ export default function Footer({ setPage, goToService }) {
 
                 {/* Brand col */}
                 <div className="ftr-col ftr-brand-col">
+                    {/* Footer — brand button */}
                     <button
                         onClick={() => go("Home")}
                         style={{
                             background: "none", border: "none",
-                            cursor: "pointer", // FIX: was "none"
-                            display: "inline-flex", alignItems: "center", gap: "0.6rem",
+                            cursor: "pointer",
+                            display: "inline-flex", alignItems: "center",
                             padding: 0, marginBottom: "1.15rem",
                         }}
                     >
-                        <img
-                            src="/logo1.png"
-                            alt="QwikGen"
-                            width={36} height={36}
-                            style={{ objectFit: "contain", flexShrink: 0 }}
-                            onError={(e) => {
-                                e.currentTarget.style.display = "none";
-                                e.currentTarget.nextSibling.style.display = "flex";
-                            }}
-                        />
-                        <svg width={36} height={36} viewBox="0 0 100 100" fill="none" style={{ display: "none", flexShrink: 0 }}>
-                            <circle cx="50" cy="50" r="48" fill={C.purple} />
-                            <path d="M30 50 C30 35 42 25 55 25 C68 25 78 35 78 48 C78 58 70 65 62 65 L55 65 L55 75 L45 75 L45 55 L58 55 C63 55 66 52 66 48 C66 44 62 37 55 37 C48 37 42 43 42 50 C42 57 47 63 55 63"
-                                stroke={C.orange} strokeWidth="5" strokeLinecap="round" fill="none" />
-                        </svg>
                         <span style={{
-                            fontFamily: "'Syne', sans-serif", fontWeight: 800,
-                            fontSize: "1.35rem", color: "#fff", letterSpacing: "-0.01em",
-                        }}>QwikGen</span>
-                        <span style={{
-                            width: 7, height: 7, background: C.orange,
-                            borderRadius: "50%", display: "inline-block", marginLeft: 2,
-                            animation: "breathe 2.8s ease infinite",
-                        }} />
+                            background: "#fff",
+                            borderRadius: 10,
+                            padding: "6px 14px",
+                            display: "inline-flex", alignItems: "center",
+                            boxShadow: "0 0 0 1px rgba(255,255,255,0.15)",
+                        }}>
+                            <img
+                                src="/Qwikgen.png"
+                                alt="QwikGen"
+                                height={36}
+                                style={{ objectFit: "contain", display: "block" }}
+                                onError={(e) => { e.currentTarget.style.display = "none"; }}
+                            />
+                        </span>
                     </button>
 
                     <p style={{

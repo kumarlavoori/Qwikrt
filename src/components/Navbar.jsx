@@ -34,9 +34,14 @@ export default function Navbar({ page, setPage }) {
     return (
         <>
             <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 300, height: 70, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 5%", background: "rgba(247,243,236,0.96)", backdropFilter: "blur(20px)", boxShadow: "0 1px 0 #EAE4D8", transition: "background 0.4s" }}>
-                <button onClick={() => setPage("Home")} style={{ background: "none", border: "none", cursor: "none", display: "flex", alignItems: "center", gap: "0.5rem", fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: isMobile ? "1.1rem" : "1.3rem", color: C.purple, letterSpacing: "-0.03em", flexShrink: 0 }}>
-                    <LogoMark size={isMobile ? 28 : 36} />
-                    QwikGen<span style={{ display: "inline-block", width: 7, height: 7, background: C.coral, borderRadius: "50%", marginLeft: 3, animation: "breathe 2.5s ease infinite" }} />
+                <button onClick={() => setPage("Home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", padding: 0, flexShrink: 0 }}>
+                    <img
+                        src="/Qwikgen.png"
+                        alt="QwikGen"
+                        height={isMobile ? 32 : 40}
+                        style={{ objectFit: "contain", display: "block" }}
+                        onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    />
                 </button>
 
                 <ul className="nav-links">

@@ -339,10 +339,10 @@ export default function Footer({ setPage, goToService }) {
     ];
 
     const SOCIALS = [
-        { platform: "instagram", href: "https://instagram.com", color: "#E1306C" },
-        { platform: "linkedin", href: "https://linkedin.com", color: "#0A66C2" },
-        { platform: "facebook", href: "https://facebook.com", color: "#1877F2" },
-        { platform: "pinterest", href: "https://pinterest.com", color: "#E60023" },
+        { platform: "instagram", href: "https://www.instagram.com/qwikgen/", color: "#E1306C" },
+        { platform: "linkedin", href: "https://www.linkedin.com/in/qwikgen/", color: "#0A66C2" },
+        { platform: "facebook", href: "https://www.facebook.com/Qwikgen/", color: "#1877F2" },
+        { platform: "pinterest", href: "https://www.pinterest.com/qwikgen/", color: "#E60023" },
     ];
 
     return (

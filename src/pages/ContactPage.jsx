@@ -317,10 +317,10 @@ export default function ContactPage() {
         { label: "Graphic Design", icon: "✏️" },
     ];
     const SOCIALS = [
-        { label: "Instagram", iconKey: "instagram", color: "#E1306C", href: "https://instagram.com" },
-        { label: "Facebook", iconKey: "facebook", color: "#1877F2", href: "https://facebook.com" },
-        { label: "Twitter / X", iconKey: "twitter", color: "#000", href: "https://twitter.com" },
-        { label: "LinkedIn", iconKey: "linkedin", color: "#0A66C2", href: "https://linkedin.com" },
+        { label: "Instagram", iconKey: "instagram", color: "#E1306C", href: "https://www.instagram.com/qwikgen/" },
+        { label: "Facebook", iconKey: "facebook", color: "#1877F2", href: "https://www.facebook.com/Qwikgen/" },
+        { label: "Twitter / X", iconKey: "twitter", color: "#000", href: "https://x.com/qwikgen" },
+        { label: "LinkedIn", iconKey: "linkedin", color: "#0A66C2", href: "https://www.linkedin.com/in/qwikgen/" },
     ];
 
     const [form, setForm] = useState({ name: "", phone: "", email: "", company: "", message: "" });

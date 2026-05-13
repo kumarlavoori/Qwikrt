@@ -445,7 +445,7 @@ function HeroServicePanel() {
             label: "Graphic Design", color: "#FFB300",
             desc: "Bold logos, brand systems, and print-ready assets — every visual crafted to make your brand impossible to ignore.",
             features: ["Brand Identity", "Print Ready", "Multi-Format"],
-            tech: ["Adobe Illustrator", "Photoshop", "InDesign", "Figma", "After Effects", "Canva Pro", "CorelDRAW", "Brand Guidelines", "Typography Systems", "Colour Theory", "Social Media Kits", "Packaging Design"],
+            tech: ["Adobe Illustrator", "Photoshop", "InDesign", "Figma", "After Effects", "Brand Guidelines", "Typography Systems", "Colour Theory", "Social Media Kits", "Packaging Design"],
             badges: ["🎨 Brand Identity", "🖨️ Print Ready", "📐 Vector Art"],
             strip: "Every visual crafted from scratch — no templates, no stock, just original brand work.",
         },
@@ -541,7 +541,7 @@ function HomePage({ setPage, goToService }) {
     const SERVICES = [
         { num: "01", id: "web", name: "Web Development", Ico: Icon.Globe, desc: "Pixel-perfect, fast-loading websites built with React, Next.js, and Django. Clean code, stunning UI.", tags: ["React", "Next.js", "Django", "TypeScript", "PostgreSQL", "Docker"] },
         { num: "02", id: "uiux", name: "UI / UX Design", Ico: Icon.Pen, desc: "Figma-first design sprints. Wireframes to polished interfaces — from concept to code.", tags: ["Figma", "Prototyping", "Design Systems", "Wireframing", "Accessibility"] },
-        { num: "03", id: "app", name: "App Development", Ico: Icon.Phone, desc: "Cross-platform mobile apps with Flutter and React Native. One codebase, two platforms.", tags: ["Flutter", "React Native", "Firebase", "iOS/Android", "Dart"] },
+        { num: "03", id: "app", name: "App Development", Ico: Icon.Phone, desc: "Cross-platform mobile apps with Flutter and React Native. One codebase, two platforms.", tags: ["Flutter", "React Native", "Firebase", "iOS/Android", "Dart", "Kotlin"] },
         { num: "04", id: "wp", name: "WordPress & CMS", Ico: Icon.Zap, desc: "Custom WordPress themes, plugins, and headless CMS setups for editorial teams.", tags: ["WordPress", "WooCommerce", "ACF Pro", "Headless CMS", "REST API"] },
         { num: "05", id: "ecom", name: "E-Commerce Solutions", Ico: Icon.Cart, desc: "High-converting stores with WooCommerce and Stripe integration, built for growth.", tags: ["WooCommerce", "Shopify", "Stripe", "Razorpay", "Inventory", "Analytics"] },
         { num: "06", id: "gd", name: "Graphic Design", Ico: Icon.Brush, desc: "Bold logos, brand identities, marketing materials, and print-ready assets crafted to make your brand unforgettable.", tags: ["Illustrator", "Brand Identity", "Typography", "Print Design", "Social Kits", "Figma"] },

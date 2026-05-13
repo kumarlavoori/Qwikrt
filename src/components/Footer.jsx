@@ -403,7 +403,7 @@ export default function Footer({ setPage, goToService }) {
                             <img
                                 src="/Qwikgen.png"
                                 alt="QwikGen"
-                                height={36}
+                                height={48}
                                 style={{ objectFit: "contain", display: "block" }}
                                 onError={(e) => { e.currentTarget.style.display = "none"; }}
                             />

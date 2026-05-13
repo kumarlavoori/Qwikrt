@@ -38,7 +38,7 @@ export default function Navbar({ page, setPage }) {
                     <img
                         src="/Qwikgen.png"
                         alt="QwikGen"
-                        height={isMobile ? 32 : 40}
+                        height={isMobile ? 44 : 52}
                         style={{ objectFit: "contain", display: "block" }}
                         onError={(e) => { e.currentTarget.style.display = "none"; }}
                     />

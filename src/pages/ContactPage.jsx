@@ -50,9 +50,9 @@ const SOCIAL_ICONS = {
 };
 
 const ICON_COLORS = {
-    email: "#EA4335",  // Gmail red
-    whatsapp: "#25D366",  // WhatsApp green
-    location: "#F4A034",  // warm amber
+    email: "#EA4335",
+    whatsapp: "#25D366",
+    location: "#F4A034",
 };
 
 /* shared error style */
@@ -199,7 +199,7 @@ function ServiceChip({ label, icon, selected, onClick, sm }) {
     );
 }
 
-/* ════ MAP CARD — no overlay ════ */
+/* ════ MAP CARD ════ */
 function MapCard({ sm }) {
     return (
         <div style={{
@@ -242,7 +242,7 @@ function InfoCard({ iconKey, label, value, sub, href, sm }) {
                 width: sm ? 32 : 36, height: sm ? 32 : 36, borderRadius: 9, flexShrink: 0,
                 background: hov ? "rgba(255,60,40,0.08)" : "rgba(255,255,255,0.08)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: ICON_COLORS[iconKey] || "#fff",   // ← brand color always
+                color: ICON_COLORS[iconKey] || "#fff",
                 transition: "background 0.25s, color 0.25s",
             }}>{SOCIAL_ICONS[iconKey]}</div>
             <div style={{ minWidth: 0 }}>
@@ -326,16 +326,24 @@ export default function ContactPage() {
     const [form, setForm] = useState({ name: "", phone: "", email: "", company: "", message: "" });
     const [selectedServices, setSelectedServices] = useState([]);
     const [submitted, setSubmitted] = useState(false);
+    const [submittedVia, setSubmittedVia] = useState(""); // "whatsapp" | "gmail"
     const [sending, setSending] = useState(false);
     const [errors, setErrors] = useState({});
 
     const toggleService = (i) => setSelectedServices(p => p.includes(i) ? p.filter(x => x !== i) : [...p, i]);
 
-    const handleSubmit = () => {
+    /* ── Shared validation ── */
+    const validate = () => {
         const e = {};
         if (!form.name.trim()) e.name = true;
         if (!form.phone.trim()) e.phone = true;
         if (!selectedServices.length) e.services = true;
+        return e;
+    };
+
+    /* ── WhatsApp submit ── */
+    const handleWhatsAppSubmit = () => {
+        const e = validate();
         if (Object.keys(e).length) { setErrors(e); return; }
         setErrors({});
         setSending(true);
@@ -350,7 +358,50 @@ export default function ContactPage() {
             form.message ? `*Message:* ${form.message}` : null,
         ].filter(Boolean).join("\n");
         const waURL = `https://wa.me/919398198719?text=${encodeURIComponent(lines)}`;
-        setTimeout(() => { setSending(false); setSubmitted(true); window.open(waURL, "_blank"); }, 900);
+        setTimeout(() => {
+            setSending(false);
+            setSubmittedVia("whatsapp");
+            setSubmitted(true);
+            window.open(waURL, "_blank");
+        }, 900);
+    };
+
+    /* ── Gmail submit ── */
+    const handleGmailSubmit = () => {
+        const e = validate();
+        if (Object.keys(e).length) { setErrors(e); return; }
+        setErrors({});
+        setSending(true);
+        const serviceNames = selectedServices.map(i => SERVICES[i].label).join(", ");
+        const subject = `Project Enquiry from ${form.name} — QwikGen Website`;
+        const body = [
+            `Hi QwikGen Team,`,
+            ``,
+            `I'd like to discuss a project with you.`,
+            ``,
+            `Name: ${form.name}`,
+            `Phone: ${form.phone}`,
+            form.email ? `Email: ${form.email}` : null,
+            form.company ? `Company: ${form.company}` : null,
+            `Services Needed: ${serviceNames}`,
+            form.message ? `Message: ${form.message}` : null,
+            ``,
+            `Looking forward to hearing from you!`,
+        ].filter(Boolean).join("\n");
+        const gmailURL = `https://mail.google.com/mail/?view=cm&to=qwikgenitsolution@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setTimeout(() => {
+            setSending(false);
+            setSubmittedVia("gmail");
+            setSubmitted(true);
+            window.open(gmailURL, "_blank");
+        }, 900);
+    };
+
+    const resetForm = () => {
+        setSubmitted(false);
+        setSubmittedVia("");
+        setForm({ name: "", phone: "", email: "", company: "", message: "" });
+        setSelectedServices([]);
     };
 
     const MQ = ["Let's Talk", "Free Consultation", "Fast Delivery", "No Commitment", "Clean Code", "Pixel Perfect", "In-House Team", "100% Custom"];
@@ -358,7 +409,7 @@ export default function ContactPage() {
     /* layout helpers */
     const sectionPad = sm ? "1.8rem 4% 2rem" : md ? "2.5rem 4%" : "clamp(3rem,5vw,4.5rem) 5%";
     const heroPad = sm ? "1.8rem 4% 2.2rem" : md ? "2.8rem 4%" : "clamp(3rem,6vw,5rem) 5%";
-    const twoCol = !sm && !md; // desktop only
+    const twoCol = !sm && !md;
 
     return (
         <div style={{ width: "100%", minWidth: 0, paddingTop: 70, fontFamily: "'Outfit',sans-serif", overflowX: "hidden" }}>
@@ -371,7 +422,6 @@ export default function ContactPage() {
                 minHeight: sm ? 230 : md ? 290 : 340,
                 backgroundImage: "radial-gradient(circle at 75% 25%, rgba(255,60,40,0.12), transparent 50%), radial-gradient(circle at 5% 85%, rgba(107,63,168,0.2), transparent 50%)",
             }}>
-                {/* ghost text — desktop only */}
                 {twoCol && (
                     <div style={{
                         fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(4rem,12vw,10rem)",
@@ -444,22 +494,31 @@ export default function ContactPage() {
                                     borderRadius: 16, padding: sm ? "1.8rem 1.2rem" : "2.5rem 2rem",
                                     textAlign: "center", boxShadow: "0 6px 32px rgba(255,60,40,0.08)",
                                 }}>
+                                    {/* Icon changes based on channel */}
                                     <div style={{
                                         width: 60, height: 60, borderRadius: "50%",
-                                        background: "rgba(37,211,102,0.1)",
+                                        background: submittedVia === "gmail"
+                                            ? "rgba(234,67,53,0.1)"
+                                            : "rgba(37,211,102,0.1)",
                                         display: "flex", alignItems: "center", justifyContent: "center",
                                         fontSize: "1.7rem", margin: "0 auto 1rem",
                                         animation: "svcIconFloat 3s ease infinite",
-                                    }}>💬</div>
+                                    }}>
+                                        {submittedVia === "gmail" ? "✉️" : "💬"}
+                                    </div>
                                     <div style={{
                                         fontFamily: "'Bebas Neue',sans-serif",
                                         fontSize: sm ? "1.7rem" : "2.2rem",
                                         color: C.ink, lineHeight: 1, marginBottom: "0.6rem",
-                                    }}>OPENING WHATSAPP!</div>
-                                    <p style={{ color: C.inkSoft, fontSize: "0.85rem", lineHeight: 1.8, maxWidth: 300, margin: "0 auto" }}>
-                                        Your message has been pre-filled in WhatsApp. Just hit send!
+                                    }}>
+                                        {submittedVia === "gmail" ? "OPENING GMAIL!" : "OPENING WHATSAPP!"}
+                                    </div>
+                                    <p style={{ color: C.inkSoft, fontSize: "0.85rem", lineHeight: 1.8, maxWidth: 320, margin: "0 auto" }}>
+                                        {submittedVia === "gmail"
+                                            ? "Your email has been pre-filled in Gmail. Review and hit Send!"
+                                            : "Your message has been pre-filled in WhatsApp. Just hit send!"}
                                     </p>
-                                    <button onClick={() => { setSubmitted(false); setForm({ name: "", phone: "", email: "", company: "", message: "" }); setSelectedServices([]); }}
+                                    <button onClick={resetForm}
                                         style={{
                                             marginTop: "1.3rem", fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.8rem",
                                             background: C.coral, color: "#fff", border: "none",
@@ -524,41 +583,71 @@ export default function ContactPage() {
                                     <FloatInput label="Tell us about your project (optional)" value={form.message} multiline rows={sm ? 4 : 5}
                                         onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
 
-                                    {/* WhatsApp Button */}
-                                    <button
-                                        onClick={handleSubmit} disabled={sending}
-                                        style={{
-                                            fontFamily: "'Syne',sans-serif", fontWeight: 700,
-                                            fontSize: sm ? "0.88rem" : "0.96rem",
-                                            background: sending ? "rgba(37,211,102,0.65)" : "#25D366",
-                                            color: "#fff", border: "none",
-                                            padding: sm ? "0.95rem 1.5rem" : "1.05rem 2rem",
-                                            borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
-                                            transition: "all 0.25s", width: "100%",
-                                            boxShadow: "0 5px 18px rgba(37,211,102,0.26)",
-                                            display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
-                                            letterSpacing: "0.03em",
-                                        }}
-                                    >
-                                        {sending ? (
-                                            <>
+                                    {/* ── Send Buttons: WhatsApp + Gmail side by side ── */}
+                                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
+
+                                        {/* WhatsApp Button */}
+                                        <button
+                                            onClick={handleWhatsAppSubmit} disabled={sending}
+                                            style={{
+                                                fontFamily: "'Syne',sans-serif", fontWeight: 700,
+                                                fontSize: sm ? "0.8rem" : "0.88rem",
+                                                background: sending ? "rgba(37,211,102,0.65)" : "#25D366",
+                                                color: "#fff", border: "none",
+                                                padding: sm ? "0.95rem 0.6rem" : "1.05rem 0.8rem",
+                                                borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
+                                                transition: "all 0.25s", width: "100%",
+                                                boxShadow: "0 5px 18px rgba(37,211,102,0.26)",
+                                                display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem",
+                                                letterSpacing: "0.03em",
+                                            }}
+                                        >
+                                            {sending ? (
                                                 <span style={{
                                                     width: 14, height: 14, borderRadius: "50%",
                                                     border: "2px solid rgba(255,255,255,0.35)",
                                                     borderTopColor: "#fff", display: "inline-block",
                                                     animation: "spin 0.7s linear infinite",
                                                 }} />
-                                                Opening WhatsApp...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            ) : (
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                                 </svg>
-                                                Send via WhatsApp
-                                            </>
-                                        )}
-                                    </button>
+                                            )}
+                                            {sending ? "Opening..." : "WhatsApp"}
+                                        </button>
+
+                                        {/* Gmail Button */}
+                                        <button
+                                            onClick={handleGmailSubmit} disabled={sending}
+                                            style={{
+                                                fontFamily: "'Syne',sans-serif", fontWeight: 700,
+                                                fontSize: sm ? "0.8rem" : "0.88rem",
+                                                background: sending ? "rgba(234,67,53,0.5)" : "#EA4335",
+                                                color: "#fff", border: "none",
+                                                padding: sm ? "0.95rem 0.6rem" : "1.05rem 0.8rem",
+                                                borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
+                                                transition: "all 0.25s", width: "100%",
+                                                boxShadow: "0 5px 18px rgba(234,67,53,0.26)",
+                                                display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem",
+                                                letterSpacing: "0.03em",
+                                            }}
+                                        >
+                                            {sending ? (
+                                                <span style={{
+                                                    width: 14, height: 14, borderRadius: "50%",
+                                                    border: "2px solid rgba(255,255,255,0.35)",
+                                                    borderTopColor: "#fff", display: "inline-block",
+                                                    animation: "spin 0.7s linear infinite",
+                                                }} />
+                                            ) : (
+                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" fill="white" />
+                                                </svg>
+                                            )}
+                                            {sending ? "Opening..." : "Send Email"}
+                                        </button>
+                                    </div>
 
                                     <p style={{
                                         fontFamily: "'Outfit',sans-serif", fontSize: "0.68rem",
@@ -581,7 +670,6 @@ export default function ContactPage() {
                                 position: "relative", overflow: "hidden",
                                 backgroundImage: "radial-gradient(circle at 90% 10%, rgba(255,60,40,0.1), transparent 50%), radial-gradient(circle at 10% 90%, rgba(107,63,168,0.2), transparent 50%)",
                             }}>
-                                {/* ghost — desktop only */}
                                 {twoCol && (
                                     <div style={{
                                         fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(3rem,7vw,6rem)",
@@ -646,7 +734,6 @@ export default function ContactPage() {
         *, *::before, *::after { box-sizing: border-box; }
         html, body { overflow-x: hidden; }
         input, textarea, button { font-family: inherit; }
-        /* Prevent iOS zoom on focus */
         @media (max-width: 640px) {
           input[type], textarea, select { font-size: 16px !important; }
         }

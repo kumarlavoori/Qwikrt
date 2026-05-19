@@ -150,7 +150,7 @@ function NavLink({ label, onClick, accent = false }) {
                 fontSize: "0.9rem",
                 color: hov
                     ? accent ? C.orange : "#fff"
-                    : accent ? C.orangeSoft : "rgba(220,210,255,0.78)",
+                    : accent ? C.orangeSoft : "rgba(220,210,255,0.88)",
                 transition: "color 0.2s, transform 0.2s",
                 transform: hov ? "translateX(5px)" : "translateX(0)",
                 lineHeight: 1.5,
@@ -265,12 +265,12 @@ function ContactRow({ iconKey, label, value, href }) {
                     fontFamily: "'Syne', sans-serif", fontSize: "0.54rem",
                     fontWeight: 700, letterSpacing: "0.13em",
                     textTransform: "uppercase",
-                    color: "rgba(255,180,100,0.6)", marginBottom: "0.12rem",
+                    color: "rgba(255,180,100,0.85)", marginBottom: "0.12rem",
                 }}>{label}</div>
                 <div style={{
                     fontFamily: "'Outfit', sans-serif", fontSize: "0.875rem",
                     fontWeight: 400,
-                    color: hov ? "#fff" : "rgba(220,210,255,0.9)",
+                    color: hov ? "#fff" : "#fff",
                     transition: "color 0.2s",
                     overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                 }}>{value}</div>
@@ -413,10 +413,10 @@ export default function Footer({ setPage, goToService }) {
                     <p style={{
                         fontFamily: "'Outfit', sans-serif", fontWeight: 300,
                         fontSize: "0.9rem", lineHeight: 1.9,
-                        color: "rgba(220,210,255,0.58)",
+                        color: "rgba(220,210,255,0.88)",
                         maxWidth: 270, marginBottom: "1.8rem",
                     }}>
-                        A bold digital studio from Hyderabad — building fast, beautiful, and functional web products.
+                        Delivering smart solutions for modern brands — building fast, beautiful, and functional web products.
                     </p>
 
                     <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap" }}>
@@ -470,7 +470,7 @@ export default function Footer({ setPage, goToService }) {
             <div className="ftr-bottom">
                 <p style={{
                     fontFamily: "'Outfit', sans-serif", fontWeight: 300,
-                    fontSize: "0.8rem", color: "rgba(220,210,255,0.32)", margin: 0,
+                    fontSize: "0.8rem", color: "rgba(220,210,255,0.75)", margin: 0,
                 }}>
                     © 2026 QwikGen. Crafted with care in Hyderabad, India.
                 </p>
@@ -479,9 +479,9 @@ export default function Footer({ setPage, goToService }) {
                         <span key={tag} style={{
                             fontFamily: "'Syne', sans-serif", fontWeight: 700,
                             fontSize: "0.6rem", letterSpacing: "0.1em",
-                            color: "rgba(255,160,80,0.6)",
+                            color: "rgba(255,160,80,0.85)",
                             background: "rgba(232,67,26,0.1)",
-                            border: "1px solid rgba(232,67,26,0.22)",
+                            border: "1px solid rgba(232,67,26,0.45)",
                             padding: "0.22rem 0.7rem", borderRadius: 50,
                         }}>{tag}</span>
                     ))}

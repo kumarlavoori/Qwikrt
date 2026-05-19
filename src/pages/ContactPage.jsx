@@ -405,7 +405,10 @@ export default function ContactPage() {
             ``,
             `Looking forward to hearing from you!`,
         ].filter(Boolean).join("\n");
-        const gmailURL = `https://mail.google.com/mail/?view=cm&to=qwikgenitsolution@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const gmailURL = isMobile
+            ? `mailto:qwikgenitsolution@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+            : `https://mail.google.com/mail/?view=cm&to=qwikgenitsolution@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         setTimeout(() => {
             setSending("");
             setSubmittedVia("gmail");

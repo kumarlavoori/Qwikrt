@@ -345,7 +345,7 @@ function IndCard({ icon, name, desc, tag }) {
 }
 
 /* ════════════ MINI PROCESS — compact 4-step horizontal strip ════════════ */
-function MiniProcess({ setPage }) {
+function MiniProcess({ setPage, goToProcessPipeline }) {
     const STEPS = [
         { num: "01", label: "Discovery" },
         { num: "02", label: "Design" },
@@ -387,7 +387,7 @@ function MiniProcess({ setPage }) {
                                 <span style={{ fontFamily: "'Outfit',sans-serif", fontSize: "0.68rem", color: activeStep === i ? "rgba(247,243,236,0.9)" : "rgba(247,243,236,0.55)", whiteSpace: "nowrap" }}>{s.label}</span>
                             </button>
                         ))}
-                        <button data-hover className="proc-cta-btn" onClick={() => setPage("Process")}
+                        <button data-hover className="proc-cta-btn" onClick={goToProcessPipeline}
                             onMouseEnter={e => { e.currentTarget.style.background = C.coralSoft; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(255,60,40,0.45)"; }}
                             onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 18px rgba(255,60,40,0.3)"; }}>
                             See Full Process
@@ -530,7 +530,7 @@ function useWindowWidth() {
     return w;
 }
 
-function HomePage({ setPage, goToService }) {
+function HomePage({ setPage, goToService, goToContactForm, goToProcessPipeline }) {
     const width = useWindowWidth();
     const sm = width <= 767;
     const md = width >= 768 && width <= 1023;
@@ -588,7 +588,8 @@ function HomePage({ setPage, goToService }) {
                             QwikGen is a bold digital studio crafting high-performance websites, apps, and digital experiences. We combine cutting-edge technology with pixel-perfect design — delivering premium products at startup speed.
                         </p>
                         <div style={{ position: "relative", zIndex: 1, display: "flex", gap: "0.7rem", flexWrap: "wrap" }}>
-                            <BtnCoral onClick={() => setPage("Contact")} style={{ justifyContent: "center", padding: "0.88rem 1.2rem" }}>Start a Project</BtnCoral>
+                            <BtnCoral onClick={goToContactForm}
+                                style={{ justifyContent: "center", padding: "0.88rem 1.2rem" }}>Start a Project</BtnCoral>
                             <BtnGhost onClick={() => setPage("Services")} dark style={{ justifyContent: "center", padding: "0.88rem 1.2rem" }}>See Our Work</BtnGhost>
                         </div>
                     </div>
@@ -685,7 +686,7 @@ function HomePage({ setPage, goToService }) {
                     <Reveal delay={0.3}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1.5rem", paddingTop: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                             <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.88rem", lineHeight: 1.7, maxWidth: 420 }}>Ready to build something that stands out? Book a free strategy call — let's talk about your project.</p>
-                            <BtnCoral onClick={() => setPage("Contact")} style={{ fontSize: "0.95rem", padding: "0.9rem 2.1rem" }}>Start Your Project</BtnCoral>
+                            <BtnCoral onClick={goToContactForm} style={{ fontSize: "0.95rem", padding: "0.9rem 2.1rem" }}>Start Your Project</BtnCoral>
                         </div>
                     </Reveal>
                 </div>
@@ -707,7 +708,7 @@ function HomePage({ setPage, goToService }) {
             </section>
 
             {/* ══ MINI PROCESS ══ */}
-            <MiniProcess setPage={setPage} />
+            <MiniProcess setPage={setPage} goToProcessPipeline={goToProcessPipeline} />
 
             {/* ══ INDUSTRIES ══ */}
             <section className="qg-section" style={{ background: C.creamDark }}>
@@ -729,6 +730,6 @@ function HomePage({ setPage, goToService }) {
 }
 
 /* ════════════ ROOT ════════════ */
-export default function Qwikgenhome({ setPage, goToService }) {
-    return <HomePage setPage={setPage} goToService={goToService} />;
+export default function Qwikgenhome({ setPage, goToService, goToContactForm, goToProcessPipeline }) {
+    return <HomePage setPage={setPage} goToService={goToService} goToContactForm={goToContactForm} goToProcessPipeline={goToProcessPipeline} />;
 }

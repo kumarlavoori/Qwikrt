@@ -26,44 +26,67 @@ export default function App() {
     document.title = titles[location.pathname] || "Qwikgen";
   }, [location.pathname]);
 
-  const handleSetPage = (p) => {
-    const routes = {
-      Home: "/",
-      About: "/about",
-      Services: "/services",
-      Process: "/process",
-      Contact: "/contact",
-    };
-    navigate(routes[p] || "/");
-    window.scrollTo({ top: 0, behavior: "instant" });
-  };
 
   const handleGoToService = (serviceId) => {
     setTargetService(serviceId);
     navigate("/services");
     // No scroll here — ServicesPage handles it via useLayoutEffect
   };
+  // Add this helper function inside App():
+  const [targetSection, setTargetSection] = useState(null);
+
+  const goToContactForm = () => {
+    setTargetSection("contact-form");
+    navigate("/contact");
+  };
+
+  const goToProcessPipeline = () => {
+    setTargetSection("process-pipeline");
+    navigate("/process");
+  };
+
+  const handleSetPage = (p) => {
+    const routes = { Home: "/", About: "/about", Services: "/services", Process: "/process", Contact: "/contact" };
+    setTargetSection(null); // clear any target so page goes to top
+    navigate(routes[p] || "/");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
 
   return (
     <>
       <Cursor />
-      <Navbar page={location.pathname} setPage={handleSetPage} />
+      <Navbar page={location.pathname} setPage={handleSetPage} goToContactForm={goToContactForm} />
       <main>
         <Routes>
-          <Route path="/" element={<Qwikgenhome setPage={handleSetPage} goToService={handleGoToService} />} />
-          <Route path="/about" element={<AboutPage setPage={handleSetPage} />} />
+          <Route path="/" element={<Qwikgenhome setPage={handleSetPage} goToService={handleGoToService} goToContactForm={goToContactForm} goToProcessPipeline={goToProcessPipeline} />} />
+          <Route path="/about" element={<AboutPage setPage={handleSetPage} goToContactForm={goToContactForm} />} />
           <Route path="/services" element={
             <ServicesPage
               setPage={handleSetPage}
               targetService={targetService}
               onServiceHandled={() => setTimeout(() => setTargetService(null), 500)}
+              goToContactForm={goToContactForm}
+              goToProcessPipeline={goToProcessPipeline}
             />}
           />
-          <Route path="/process" element={<ProcessPage setPage={handleSetPage} />} />
-          <Route path="/contact" element={<ContactPage setPage={handleSetPage} />} />
+          <Route path="/process" element={
+            <ProcessPage
+              setPage={handleSetPage}
+              goToContactForm={goToContactForm}
+              targetSection={targetSection}
+              onSectionHandled={() => setTimeout(() => setTargetSection(null), 500)}
+            />}
+          />
+          <Route path="/contact" element={
+            <ContactPage
+              setPage={handleSetPage}
+              targetSection={targetSection}
+              onSectionHandled={() => setTimeout(() => setTargetSection(null), 500)}
+            />}
+          />
         </Routes>
       </main>
-      <Footer setPage={handleSetPage} goToService={handleGoToService} />
+      <Footer setPage={handleSetPage} goToService={handleGoToService} goToContactForm={goToContactForm} />
     </>
   );
 }

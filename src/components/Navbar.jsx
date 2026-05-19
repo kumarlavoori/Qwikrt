@@ -14,7 +14,7 @@ function NavLink({ label, active, onClick }) {
     );
 }
 
-export default function Navbar({ page, setPage }) {
+export default function Navbar({ page, setPage, goToContactForm }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
 
@@ -51,7 +51,7 @@ export default function Navbar({ page, setPage }) {
 
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                     {width >= 768 && (
-                        <button className="nav-cta" onClick={() => setPage("Contact")}
+                        <button className="nav-cta" onClick={goToContactForm}
                             onMouseEnter={(e) => { e.currentTarget.style.background = C.purpleSoft; e.currentTarget.style.transform = "translateY(-1px)"; }}
                             onMouseLeave={(e) => { e.currentTarget.style.background = C.purple; e.currentTarget.style.transform = ""; }}
                             style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: isTablet ? "0.78rem" : "0.83rem", background: C.purple, color: "#fff", border: "none", cursor: "none", padding: isTablet ? "0.5rem 1rem" : "0.6rem 1.4rem", borderRadius: 50, display: "inline-flex", alignItems: "center", gap: "0.4rem", transition: "all 0.22s", whiteSpace: "nowrap" }}>
@@ -89,7 +89,7 @@ export default function Navbar({ page, setPage }) {
 
                 {/* CTA — always pinned at bottom */}
                 <div className="mob-menu-cta" style={{ marginTop: "auto", paddingTop: "1.5rem" }}>
-                    <button onClick={() => setPage("Contact")} style={{ width: "100%", padding: "0.9rem 1.5rem", background: C.coral, color: "#fff", border: "none", borderRadius: 50, fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.9rem", cursor: "none", boxShadow: "0 6px 22px rgba(255,60,40,0.35)" }}>
+                    <button onClick={goToContactForm} style={{ width: "100%", padding: "0.9rem 1.5rem", background: C.coral, color: "#fff", border: "none", borderRadius: 50, fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.9rem", cursor: "none", boxShadow: "0 6px 22px rgba(255,60,40,0.35)" }}>
                         Start a Project →
                     </button>
                     <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: "0.72rem", color: "rgba(247,243,236,0.25)", textAlign: "center", marginTop: "1rem" }}>Based in Hyderabad · hello@qwikgen.in</p>

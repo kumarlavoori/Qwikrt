@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 
 /* ════ THEME ════ */
 const C = {
@@ -308,7 +308,17 @@ function SocialBtn({ label, iconKey, color, href }) {
 }
 
 /* ════ MAIN CONTACT PAGE ════ */
-export default function ContactPage() {
+export default function ContactPage({ setPage, targetSection, onSectionHandled }) {
+    useLayoutEffect(() => {
+        if (!targetSection) return;
+        const el = document.getElementById(targetSection);
+        if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 30;
+            window.scrollTo({ top, behavior: "instant" });
+        }
+        onSectionHandled?.();
+    }, [targetSection]);
+    // ... rest unchanged
     const width = useWindowWidth();
     const sm = width <= 640;
     const md = width > 640 && width <= 1023;
@@ -477,7 +487,7 @@ export default function ContactPage() {
             <Marquee items={MQ} coral />
 
             {/* ══ MAIN CONTENT ══ */}
-            <section style={{ background: C.cream, padding: sectionPad }}>
+            <section id="contact-form" style={{ background: C.cream, padding: sectionPad }}>
                 <div style={{
                     display: "grid",
                     gridTemplateColumns: twoCol ? "1.1fr 1fr" : "1fr",

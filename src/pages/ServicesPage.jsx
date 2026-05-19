@@ -56,7 +56,7 @@ function ScanLine() {
 }
 
 /* ════ SERVICE EXPLORER ════ */
-function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
+function ServiceExplorer({ setPage, targetService, onServiceHandled, goToContactForm }) {
 
     const SERVICES = [
         {
@@ -261,7 +261,7 @@ function ServiceExplorer({ setPage, targetService, onServiceHandled }) {
                                 </div>
                             </div>
 
-                            <button data-hover onClick={(e) => { e.stopPropagation(); setPage("Contact"); }}
+                            <button data-hover onClick={(e) => { e.stopPropagation(); goToContactForm(); }}
                                 onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(255,60,40,0.4)"; }}
                                 onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 6px 20px rgba(255,60,40,0.3)"; }}
                                 style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.85rem", background: C.coral, color: "#fff", border: "none", padding: "0.85rem 2rem", borderRadius: 50, cursor: "none", transition: "all 0.25s", whiteSpace: "nowrap", boxShadow: "0 6px 20px rgba(255,60,40,0.3)", display: "inline-flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
@@ -425,7 +425,7 @@ function SvcConnector({ fromLeft, toLeft, fillPct, containerWidth, isMobileWidth
     );
 }
 
-function SvcPipeline({ setPage }) {
+function SvcPipeline({ setPage, goToProcessPipeline }) {
     const wrapRef = useRef(null);
     const cardRefs = useRef([]);
     const [activeStep, setActiveStep] = useState(null);
@@ -489,7 +489,7 @@ function SvcPipeline({ setPage }) {
                     </Reveal>
                 </div>
                 <Reveal delay={0.14}>
-                    <button onClick={() => setPage("Process")}
+                    <button onClick={goToProcessPipeline}
                         onMouseEnter={e => { e.currentTarget.style.background = C.purple; e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderColor = C.purple; }}
                         onMouseLeave={e => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = C.purple; e.currentTarget.style.borderColor = "rgba(61,26,120,0.18)"; }}
                         style={{ background: "none", border: "1.5px solid rgba(61,26,120,0.18)", color: C.purple, fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.85rem", padding: "0.6rem 1.5rem", borderRadius: 50, cursor: "pointer", transition: "all 0.2s" }}>
@@ -529,7 +529,7 @@ function SvcPipeline({ setPage }) {
 /* ════ PAGE EXPORT ════ */
 
 
-export default function ServicesPage({ setPage, targetService, onServiceHandled }) {
+export default function ServicesPage({ setPage, targetService, onServiceHandled, goToContactForm, goToProcessPipeline }) {
 
     useLayoutEffect(() => {
         if (targetService) {
@@ -603,12 +603,14 @@ export default function ServicesPage({ setPage, targetService, onServiceHandled 
                 setPage={setPage}
                 targetService={targetService}
                 onServiceHandled={onServiceHandled}
+                goToContactForm={goToContactForm}
+                goToProcessPipeline={goToProcessPipeline}
             />
 
             <Marquee items={MQ2} />
 
             {/* ══ PROCESS PIPELINE ══ */}
-            <SvcPipeline setPage={setPage} />
+            <SvcPipeline setPage={setPage} goToProcessPipeline={goToProcessPipeline} />
 
             {/* ══ CTA BANNER — exactly matching About & Process pages ══ */}
             <section style={{ background: C.creamDark, padding: sm ? "2.5rem 5%" : "4rem 6%" }}>
@@ -662,7 +664,7 @@ export default function ServicesPage({ setPage, targetService, onServiceHandled 
 
                         {/* CTA button — full-width on mobile, auto on larger screens */}
                         <button
-                            onClick={() => setPage("Contact")}
+                            onClick={goToContactForm}
                             onMouseEnter={e => {
                                 e.currentTarget.style.background = "#e8321e";
                                 e.currentTarget.style.transform = "translateY(-2px)";

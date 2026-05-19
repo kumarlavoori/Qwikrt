@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { C } from "../components/theme";
 
 /* ════ REVEAL ════ */
@@ -296,10 +296,7 @@ function StepCard({ step, index, isActive, isCurrent, isLeft, isMobile, isTablet
     );
 }
 
-/* ════ CARD CONNECTOR
-   Uses a div-based animated fill instead of SVG strokeDasharray
-   so it works perfectly at every screen width including 320px
-════ */
+
 function CardConnector({ fromLeft, toLeft, fillPct, containerWidth, isMobileWidth, isTabletWidth }) {
     // Figure out center-x for start and end based on card alignment
     const cardPct = isMobileWidth ? 1.0 : isTabletWidth ? 0.80 : 0.63;
@@ -406,8 +403,6 @@ function Pipeline() {
     useEffect(() => {
         const onScroll = () => {
             const wh = window.innerHeight;
-            // On small screens trigger earlier (higher fraction) so connector
-            // fill is visible while the user is actually watching the cards
             const triggerY = wh * (screenW < 540 ? 0.88 : screenW < 780 ? 0.72 : 0.62);
 
             let current = null;
@@ -443,7 +438,7 @@ function Pipeline() {
     const cardWidth = isMobile ? "100%" : isTablet ? "80%" : "63%";
 
     return (
-        <div style={{ background: C.cream, padding: isMobile ? "1.8rem 3.5% 3rem" : "3rem 5% 5rem" }}>
+        <div id="process-pipeline" style={{ background: C.cream, padding: isMobile ? "1.8rem 3.5% 3rem" : "3rem 5% 5rem" }}>
             <div
                 ref={wrapRef}
                 style={{ display: "flex", flexDirection: "column", gap: 0, maxWidth: 960, margin: "0 auto" }}
@@ -485,7 +480,7 @@ function Pipeline() {
 }
 
 /* ════ HERO ════ */
-function ProcessHero({ setPage }) {
+function ProcessHero({ setPage, goToContactForm }) {
     const [mounted, setMounted] = useState(false);
     useEffect(() => { setTimeout(() => setMounted(true), 80); }, []);
     return (
@@ -529,11 +524,11 @@ function ProcessHero({ setPage }) {
                         fontSize: "clamp(0.88rem,1.4vw,1rem)",
                         lineHeight: 1.85, maxWidth: 480, marginBottom: "2rem",
                     }}>
-                        A clear, sprint-based workflow built on transparency. Scroll through the pipeline below — each stage activates as you move through the page.
+                        We don't just ship code — we build with clarity, communication, and craftsmanship. Every stage below is a commitment we make to you.
                     </p>
                     <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                         <button
-                            onClick={() => setPage("Contact")}
+                            onClick={goToContactForm}
                             onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                             onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; }}
                             style={{
@@ -563,7 +558,7 @@ function ProcessHero({ setPage }) {
 }
 
 /* ════ CTA ════ */
-function ProcessCTA({ setPage }) {
+function ProcessCTA({ setPage, goToContactForm }) {
     const [screenW, setScreenW] = useState(
         typeof window !== "undefined" ? window.innerWidth : 1200
     );
@@ -609,7 +604,7 @@ function ProcessCTA({ setPage }) {
                         </p>
                     </div>
                     <button
-                        onClick={() => setPage("Contact")}
+                        onClick={goToContactForm}
                         onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(255,60,40,0.5)"; }}
                         onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 6px 24px rgba(255,60,40,0.35)"; }}
                         style={{
@@ -633,15 +628,24 @@ function ProcessCTA({ setPage }) {
 }
 
 /* ════ ROOT ════ */
-export default function ProcessPage({ setPage }) {
+export default function ProcessPage({ setPage, goToContactForm, targetSection, onSectionHandled }) {
+    useLayoutEffect(() => {
+        if (!targetSection) return;
+        const el = document.getElementById(targetSection);
+        if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 70;
+            window.scrollTo({ top, behavior: "instant" });
+        }
+        onSectionHandled?.();
+    }, [targetSection]);
     const MQ = ["Discovery", "Design Sprint", "Build & Iterate", "QA & Testing", "Deploy & Handoff", "Clean Code", "Pixel Perfect", "Transparent Process"];
     return (
         <div style={{ width: "100%", paddingTop: 70 }}>
-            <ProcessHero setPage={setPage} />
+            <ProcessHero setPage={setPage} goToContactForm={goToContactForm} />
             <Marquee items={MQ} coral />
             <Pipeline />
             <Marquee items={MQ} reverse />
-            <ProcessCTA setPage={setPage} />
+            <ProcessCTA setPage={setPage} goToContactForm={goToContactForm} />
             <style>{`
                 @keyframes marquee    { from{transform:translateX(0)}        to{transform:translateX(-33.333%)} }
                 @keyframes marqueeRev { from{transform:translateX(-33.333%)} to{transform:translateX(0)} }

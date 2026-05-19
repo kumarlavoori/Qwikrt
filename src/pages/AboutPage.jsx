@@ -548,7 +548,7 @@ function DetailCard({ cur, ac, paused, sm, setPaused, showPause }) {
 }
 
 /* ════ ABOUT PAGE ════ */
-export default function AboutPage({ setPage }) {
+export default function AboutPage({ setPage, goToContactForm }) {
     const width = useWindowWidth();
     const sm = width <= 767;
     const md = width >= 768 && width <= 1023;
@@ -735,7 +735,7 @@ export default function AboutPage({ setPage }) {
                         <Reveal delay={0.15}>
                             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                                 <button
-                                    onClick={() => setPage("Contact")}
+                                    onClick={goToContactForm}
                                     onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                                     onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; }}
                                     style={{
@@ -911,7 +911,7 @@ export default function AboutPage({ setPage }) {
                             </p>
                         </div>
                         <button
-                            onClick={() => setPage("Contact")}
+                            onClick={goToContactForm}
                             onMouseEnter={e => { e.currentTarget.style.background = "#e8321e"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(255,60,40,0.5)"; }}
                             onMouseLeave={e => { e.currentTarget.style.background = C.coral; e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 6px 24px rgba(255,60,40,0.35)"; }}
                             style={{

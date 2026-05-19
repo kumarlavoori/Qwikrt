@@ -472,7 +472,7 @@ export default function Footer({ setPage, goToService }) {
                     fontFamily: "'Outfit', sans-serif", fontWeight: 300,
                     fontSize: "0.8rem", color: "rgba(220,210,255,0.75)", margin: 0,
                 }}>
-                    © 2026 QwikGen. Crafted with care in Hyderabad, India.
+                    © 2026{new Date().getFullYear() > 2026 ? `–${new Date().getFullYear()}` : ""} QwikGen. Crafted with care in Hyderabad, India.
                 </p>
                 <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                     {["Web Development", "UI/UX", "Apps", "E-Commerce", "Graphic Design", "WordPress"].map(tag => (

@@ -334,7 +334,8 @@ export default function ContactPage() {
     const [selectedServices, setSelectedServices] = useState([]);
     const [submitted, setSubmitted] = useState(false);
     const [submittedVia, setSubmittedVia] = useState("");
-    const [sending, setSending] = useState(false);
+    // ── FIX: "" = idle, "whatsapp" = WA loading, "gmail" = Gmail loading ──
+    const [sending, setSending] = useState("");
     const [errors, setErrors] = useState({});
     const [waHov, setWaHov] = useState(false);
     const [gmHov, setGmHov] = useState(false);
@@ -360,19 +361,23 @@ export default function ContactPage() {
         const e = validate();
         if (Object.keys(e).length) { setErrors(e); return; }
         setErrors({});
-        setSending(true);
+        setSending("whatsapp"); // ← only WA button gets loading state
         const lines = [
-            `*New Project Enquiry*`, ``,
-            `*Name:* ${form.name}`,
-            `*Phone:* ${form.phone}`,
-            form.email ? `*Email:* ${form.email}` : null,
-            form.company ? `*Company:* ${form.company}` : null,
-            `*Services:* ${buildServiceNames()}`,
-            form.message ? `*Message:* ${form.message}` : null,
+            `Hi QwikGen Team,`,
+            `I'd like to discuss a project with you.`,
+            ``,
+            `Name: ${form.name}`,
+            `Phone: ${form.phone}`,
+            form.email ? `Email: ${form.email}` : null,
+            form.company ? `Company: ${form.company}` : null,
+            `Services Needed: ${buildServiceNames()}`,
+            form.message ? `Message: ${form.message}` : null,
+            ``,
+            `Looking forward to hearing from you!`,
         ].filter(Boolean).join("\n");
         const waURL = `https://wa.me/919398198719?text=${encodeURIComponent(lines)}`;
         setTimeout(() => {
-            setSending(false);
+            setSending("");
             setSubmittedVia("whatsapp");
             setSubmitted(true);
             window.open(waURL, "_blank");
@@ -384,7 +389,7 @@ export default function ContactPage() {
         const e = validate();
         if (Object.keys(e).length) { setErrors(e); return; }
         setErrors({});
-        setSending(true);
+        setSending("gmail"); // ← only Gmail button gets loading state
         const subject = `Project Enquiry from ${form.name} — QwikGen Website`;
         const body = [
             `Hi QwikGen Team,`,
@@ -402,7 +407,7 @@ export default function ContactPage() {
         ].filter(Boolean).join("\n");
         const gmailURL = `https://mail.google.com/mail/?view=cm&to=qwikgenitsolution@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         setTimeout(() => {
-            setSending(false);
+            setSending("");
             setSubmittedVia("gmail");
             setSubmitted(true);
             window.open(gmailURL, "_blank");
@@ -577,7 +582,7 @@ export default function ContactPage() {
                                             ))}
                                         </div>
 
-                                        {/* Other — custom input, shown when "Other" chip is selected */}
+                                        {/* Other — custom input */}
                                         {selectedServices.includes(6) && (
                                             <div style={{ marginTop: "0.75rem" }}>
                                                 <input
@@ -610,25 +615,29 @@ export default function ContactPage() {
                                     {/* ── Send Buttons ── */}
                                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
 
-                                        {/* WhatsApp Button */}
+                                        {/* ── WhatsApp Button ── */}
                                         <button
-                                            onClick={handleWhatsAppSubmit} disabled={sending}
-                                            onMouseEnter={() => setWaHov(true)} onMouseLeave={() => setWaHov(false)}
+                                            onClick={handleWhatsAppSubmit}
+                                            disabled={sending !== ""}
+                                            onMouseEnter={() => setWaHov(true)}
+                                            onMouseLeave={() => setWaHov(false)}
                                             style={{
                                                 fontFamily: "'Syne',sans-serif", fontWeight: 700,
                                                 fontSize: sm ? "0.8rem" : "0.88rem",
-                                                background: sending ? "rgba(37,211,102,0.65)" : waHov ? "#20c25a" : "#25D366",
+                                                background: sending === "whatsapp" ? "rgba(37,211,102,0.65)" : waHov ? "#20c25a" : "#25D366",
                                                 color: "#fff", border: "none",
                                                 padding: sm ? "0.95rem 0.6rem" : "1.05rem 0.8rem",
-                                                borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
+                                                borderRadius: 50,
+                                                cursor: sending !== "" ? "not-allowed" : "pointer",
                                                 transition: "all 0.25s", width: "100%",
-                                                boxShadow: waHov && !sending ? "0 8px 28px rgba(37,211,102,0.45)" : "0 5px 18px rgba(37,211,102,0.26)",
-                                                transform: waHov && !sending ? "translateY(-2px)" : "none",
+                                                boxShadow: waHov && sending === "" ? "0 8px 28px rgba(37,211,102,0.45)" : "0 5px 18px rgba(37,211,102,0.26)",
+                                                transform: waHov && sending === "" ? "translateY(-2px)" : "none",
                                                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem",
                                                 letterSpacing: "0.03em",
+                                                opacity: sending === "gmail" ? 0.55 : 1, // dim while the OTHER button is loading
                                             }}
                                         >
-                                            {sending ? (
+                                            {sending === "whatsapp" ? (
                                                 <span style={{
                                                     width: 14, height: 14, borderRadius: "50%",
                                                     border: "2px solid rgba(255,255,255,0.35)",
@@ -640,28 +649,32 @@ export default function ContactPage() {
                                                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                                 </svg>
                                             )}
-                                            {sending ? "Opening..." : "WhatsApp"}
+                                            {sending === "whatsapp" ? "Opening..." : "WhatsApp"}
                                         </button>
 
-                                        {/* Gmail Button */}
+                                        {/* ── Gmail Button ── */}
                                         <button
-                                            onClick={handleGmailSubmit} disabled={sending}
-                                            onMouseEnter={() => setGmHov(true)} onMouseLeave={() => setGmHov(false)}
+                                            onClick={handleGmailSubmit}
+                                            disabled={sending !== ""}
+                                            onMouseEnter={() => setGmHov(true)}
+                                            onMouseLeave={() => setGmHov(false)}
                                             style={{
                                                 fontFamily: "'Syne',sans-serif", fontWeight: 700,
                                                 fontSize: sm ? "0.8rem" : "0.88rem",
-                                                background: sending ? "rgba(30,27,40,0.7)" : gmHov ? "#2d2840" : "#1E1B28",
+                                                background: sending === "gmail" ? "rgba(30,27,40,0.7)" : gmHov ? "#2d2840" : "#1E1B28",
                                                 color: "#fff", border: "none",
                                                 padding: sm ? "0.95rem 0.6rem" : "1.05rem 0.8rem",
-                                                borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
+                                                borderRadius: 50,
+                                                cursor: sending !== "" ? "not-allowed" : "pointer",
                                                 transition: "all 0.25s", width: "100%",
-                                                boxShadow: gmHov && !sending ? "0 8px 28px rgba(0,0,0,0.45)" : "0 5px 18px rgba(0,0,0,0.28)",
-                                                transform: gmHov && !sending ? "translateY(-2px)" : "none",
+                                                boxShadow: gmHov && sending === "" ? "0 8px 28px rgba(0,0,0,0.45)" : "0 5px 18px rgba(0,0,0,0.28)",
+                                                transform: gmHov && sending === "" ? "translateY(-2px)" : "none",
                                                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem",
                                                 letterSpacing: "0.03em",
+                                                opacity: sending === "whatsapp" ? 0.55 : 1, // dim while the OTHER button is loading
                                             }}
                                         >
-                                            {sending ? (
+                                            {sending === "gmail" ? (
                                                 <span style={{
                                                     width: 14, height: 14, borderRadius: "50%",
                                                     border: "2px solid rgba(255,255,255,0.35)",
@@ -677,7 +690,7 @@ export default function ContactPage() {
                                                     <path fill="#4285F4" d="M7.5 28.5V36H0l7.5-7.5zM40.5 28.5V36H48l-7.5-7.5z" />
                                                 </svg>
                                             )}
-                                            {sending ? "Opening..." : "Send Email"}
+                                            {sending === "gmail" ? "Opening..." : "Send Email"}
                                         </button>
                                     </div>
 

@@ -454,7 +454,7 @@ export default function Footer({ setPage, goToService }) {
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem", marginBottom: "1.5rem" }}>
                         <ContactRow iconKey="email" label="Email" value="qwikgenitsolution@gmail.com" href="mailto:qwikgenitsolution@gmail.com" />
                         <ContactRow iconKey="whatsapp" label="WhatsApp" value="+91 93981 98719" href="https://wa.me/919398198719" />
-                        <ContactRow iconKey="location" label="Location" value="SR Nagar, Hyderabad, Telangana, India" href={null} />
+                        <ContactRow iconKey="location" label="Location" value="SR Nagar, Hyderabad" href={null} />
                     </div>
                     <WaButton href="https://wa.me/919398198719" />
                 </div>
@@ -472,10 +472,10 @@ export default function Footer({ setPage, goToService }) {
                     fontFamily: "'Outfit', sans-serif", fontWeight: 300,
                     fontSize: "0.8rem", color: "rgba(220,210,255,0.32)", margin: 0,
                 }}>
-                    © 2026 QwikGen. Crafted with care in Hyderabad 🇮🇳
+                    © 2026 QwikGen. Crafted with care in Hyderabad, India.
                 </p>
                 <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {["Web Development", "UI/UX", "Apps", "E-Commerce"].map(tag => (
+                    {["Web Development", "UI/UX", "Apps", "E-Commerce", "Graphic Design", "WordPress"].map(tag => (
                         <span key={tag} style={{
                             fontFamily: "'Syne', sans-serif", fontWeight: 700,
                             fontSize: "0.6rem", letterSpacing: "0.1em",

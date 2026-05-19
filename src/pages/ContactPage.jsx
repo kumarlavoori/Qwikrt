@@ -55,7 +55,6 @@ const ICON_COLORS = {
     location: "#F4A034",
 };
 
-/* shared error style */
 const errStyle = {
     fontFamily: "'Outfit',sans-serif",
     fontSize: "0.68rem",
@@ -181,19 +180,25 @@ function FloatInput({ label, type = "text", value, onChange, required, multiline
 
 /* ════ SERVICE CHIP ════ */
 function ServiceChip({ label, icon, selected, onClick, sm }) {
+    const [hov, setHov] = useState(false);
     return (
-        <button onClick={onClick} style={{
-            display: "inline-flex", alignItems: "center", gap: "0.38rem",
-            padding: sm ? "0.42rem 0.8rem" : "0.52rem 1rem",
-            borderRadius: 50,
-            border: `1.5px solid ${selected ? C.coral : "#EAE4D8"}`,
-            background: selected ? "rgba(255,60,40,0.07)" : "#fff",
-            fontFamily: "'Syne',sans-serif", fontWeight: 700,
-            fontSize: sm ? "0.68rem" : "0.72rem",
-            color: selected ? C.coral : C.inkSoft,
-            cursor: "pointer", transition: "all 0.2s", letterSpacing: "0.03em",
-            boxShadow: selected ? "0 0 0 3px rgba(255,60,40,0.1)" : "none",
-        }}>
+        <button
+            onClick={onClick}
+            onMouseEnter={() => setHov(true)}
+            onMouseLeave={() => setHov(false)}
+            style={{
+                display: "inline-flex", alignItems: "center", gap: "0.38rem",
+                padding: sm ? "0.42rem 0.8rem" : "0.52rem 1rem",
+                borderRadius: 50,
+                border: `1.5px solid ${selected ? C.coral : hov ? "rgba(255,60,40,0.4)" : "#EAE4D8"}`,
+                background: selected ? "rgba(255,60,40,0.07)" : hov ? "rgba(255,60,40,0.04)" : "#fff",
+                fontFamily: "'Syne',sans-serif", fontWeight: 700,
+                fontSize: sm ? "0.68rem" : "0.72rem",
+                color: selected ? C.coral : hov ? C.coral : C.inkSoft,
+                cursor: "pointer", transition: "all 0.2s", letterSpacing: "0.03em",
+                boxShadow: selected ? "0 0 0 3px rgba(255,60,40,0.1)" : hov ? "0 4px 12px rgba(255,60,40,0.1)" : "none",
+                transform: hov && !selected ? "translateY(-1px)" : "none",
+            }}>
             <span style={{ fontSize: "0.82rem" }}>{icon}</span>{label}
         </button>
     );
@@ -315,7 +320,9 @@ export default function ContactPage() {
         { label: "E-Commerce", icon: "🛒" },
         { label: "WordPress & CMS", icon: "⚡" },
         { label: "Graphic Design", icon: "✏️" },
+        { label: "Other", icon: "✨" },
     ];
+
     const SOCIALS = [
         { label: "Instagram", iconKey: "instagram", color: "#E1306C", href: "https://www.instagram.com/qwikgen/" },
         { label: "Facebook", iconKey: "facebook", color: "#1877F2", href: "https://www.facebook.com/Qwikgen/" },
@@ -323,16 +330,18 @@ export default function ContactPage() {
         { label: "LinkedIn", iconKey: "linkedin", color: "#0A66C2", href: "https://www.linkedin.com/in/qwikgen/" },
     ];
 
-    const [form, setForm] = useState({ name: "", phone: "", email: "", company: "", message: "" });
+    const [form, setForm] = useState({ name: "", phone: "", email: "", company: "", message: "", otherService: "" });
     const [selectedServices, setSelectedServices] = useState([]);
     const [submitted, setSubmitted] = useState(false);
-    const [submittedVia, setSubmittedVia] = useState(""); // "whatsapp" | "gmail"
+    const [submittedVia, setSubmittedVia] = useState("");
     const [sending, setSending] = useState(false);
     const [errors, setErrors] = useState({});
+    const [waHov, setWaHov] = useState(false);
+    const [gmHov, setGmHov] = useState(false);
+    const [otherFocused, setOtherFocused] = useState(false);
 
     const toggleService = (i) => setSelectedServices(p => p.includes(i) ? p.filter(x => x !== i) : [...p, i]);
 
-    /* ── Shared validation ── */
     const validate = () => {
         const e = {};
         if (!form.name.trim()) e.name = true;
@@ -341,20 +350,24 @@ export default function ContactPage() {
         return e;
     };
 
+    const buildServiceNames = () =>
+        selectedServices.map(i =>
+            i === 6 ? `Other: ${form.otherService.trim() || "unspecified"}` : SERVICES[i].label
+        ).join(", ");
+
     /* ── WhatsApp submit ── */
     const handleWhatsAppSubmit = () => {
         const e = validate();
         if (Object.keys(e).length) { setErrors(e); return; }
         setErrors({});
         setSending(true);
-        const serviceNames = selectedServices.map(i => SERVICES[i].label).join(", ");
         const lines = [
             `*New Project Enquiry*`, ``,
             `*Name:* ${form.name}`,
             `*Phone:* ${form.phone}`,
             form.email ? `*Email:* ${form.email}` : null,
             form.company ? `*Company:* ${form.company}` : null,
-            `*Services:* ${serviceNames}`,
+            `*Services:* ${buildServiceNames()}`,
             form.message ? `*Message:* ${form.message}` : null,
         ].filter(Boolean).join("\n");
         const waURL = `https://wa.me/919398198719?text=${encodeURIComponent(lines)}`;
@@ -372,7 +385,6 @@ export default function ContactPage() {
         if (Object.keys(e).length) { setErrors(e); return; }
         setErrors({});
         setSending(true);
-        const serviceNames = selectedServices.map(i => SERVICES[i].label).join(", ");
         const subject = `Project Enquiry from ${form.name} — QwikGen Website`;
         const body = [
             `Hi QwikGen Team,`,
@@ -383,7 +395,7 @@ export default function ContactPage() {
             `Phone: ${form.phone}`,
             form.email ? `Email: ${form.email}` : null,
             form.company ? `Company: ${form.company}` : null,
-            `Services Needed: ${serviceNames}`,
+            `Services Needed: ${buildServiceNames()}`,
             form.message ? `Message: ${form.message}` : null,
             ``,
             `Looking forward to hearing from you!`,
@@ -400,13 +412,12 @@ export default function ContactPage() {
     const resetForm = () => {
         setSubmitted(false);
         setSubmittedVia("");
-        setForm({ name: "", phone: "", email: "", company: "", message: "" });
+        setForm({ name: "", phone: "", email: "", company: "", message: "", otherService: "" });
         setSelectedServices([]);
     };
 
     const MQ = ["Let's Talk", "Free Consultation", "Fast Delivery", "No Commitment", "Clean Code", "Pixel Perfect", "In-House Team", "100% Custom"];
 
-    /* layout helpers */
     const sectionPad = sm ? "1.8rem 4% 2rem" : md ? "2.5rem 4%" : "clamp(3rem,5vw,4.5rem) 5%";
     const heroPad = sm ? "1.8rem 4% 2.2rem" : md ? "2.8rem 4%" : "clamp(3rem,6vw,5rem) 5%";
     const twoCol = !sm && !md;
@@ -436,14 +447,8 @@ export default function ContactPage() {
                     <Reveal delay={0.06}>
                         <h1 style={{
                             fontFamily: "'Bebas Neue',sans-serif",
-                            fontSize: sm
-                                ? "clamp(1.9rem,8.5vw,2.7rem)"
-                                : md
-                                    ? "clamp(2.6rem,6vw,4rem)"
-                                    : "clamp(3rem,5.5vw,5.5rem)",
-                            color: C.cream,
-                            lineHeight: sm ? 1.08 : 0.95,
-                            margin: 0,
+                            fontSize: sm ? "clamp(1.9rem,8.5vw,2.7rem)" : md ? "clamp(2.6rem,6vw,4rem)" : "clamp(3rem,5.5vw,5.5rem)",
+                            color: C.cream, lineHeight: sm ? 1.08 : 0.95, margin: 0,
                         }}>
                             LET'S BUILD<br />SOMETHING<br /><span style={{ color: C.coral }}>EXTRAORDINARY.</span>
                         </h1>
@@ -469,9 +474,7 @@ export default function ContactPage() {
                     display: "grid",
                     gridTemplateColumns: twoCol ? "1.1fr 1fr" : "1fr",
                     gap: sm ? "1.5rem" : md ? "2rem" : "clamp(2.5rem,4vw,4rem)",
-                    alignItems: "start",
-                    maxWidth: 1360,
-                    margin: "0 auto",
+                    alignItems: "start", maxWidth: 1360, margin: "0 auto",
                 }}>
 
                     {/* ── LEFT: Form ── */}
@@ -494,12 +497,9 @@ export default function ContactPage() {
                                     borderRadius: 16, padding: sm ? "1.8rem 1.2rem" : "2.5rem 2rem",
                                     textAlign: "center", boxShadow: "0 6px 32px rgba(255,60,40,0.08)",
                                 }}>
-                                    {/* Icon changes based on channel */}
                                     <div style={{
                                         width: 60, height: 60, borderRadius: "50%",
-                                        background: submittedVia === "gmail"
-                                            ? "rgba(234,67,53,0.1)"
-                                            : "rgba(37,211,102,0.1)",
+                                        background: submittedVia === "gmail" ? "rgba(234,67,53,0.1)" : "rgba(37,211,102,0.1)",
                                         display: "flex", alignItems: "center", justifyContent: "center",
                                         fontSize: "1.7rem", margin: "0 auto 1rem",
                                         animation: "svcIconFloat 3s ease infinite",
@@ -518,14 +518,13 @@ export default function ContactPage() {
                                             ? "Your email has been pre-filled in Gmail. Review and hit Send!"
                                             : "Your message has been pre-filled in WhatsApp. Just hit send!"}
                                     </p>
-                                    <button onClick={resetForm}
-                                        style={{
-                                            marginTop: "1.3rem", fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.8rem",
-                                            background: C.coral, color: "#fff", border: "none",
-                                            padding: "0.75rem 1.6rem", borderRadius: 50, cursor: "pointer",
-                                            boxShadow: "0 5px 18px rgba(255,60,40,0.28)",
-                                            width: sm ? "100%" : "auto",
-                                        }}>Send Another Message</button>
+                                    <button onClick={resetForm} style={{
+                                        marginTop: "1.3rem", fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.8rem",
+                                        background: C.coral, color: "#fff", border: "none",
+                                        padding: "0.75rem 1.6rem", borderRadius: 50, cursor: "pointer",
+                                        boxShadow: "0 5px 18px rgba(255,60,40,0.28)",
+                                        width: sm ? "100%" : "auto",
+                                    }}>Send Another Message</button>
                                 </div>
                             </Reveal>
                         ) : (
@@ -577,27 +576,54 @@ export default function ContactPage() {
                                                     onClick={() => { toggleService(i); setErrors(ev => ({ ...ev, services: false })); }} />
                                             ))}
                                         </div>
+
+                                        {/* Other — custom input, shown when "Other" chip is selected */}
+                                        {selectedServices.includes(6) && (
+                                            <div style={{ marginTop: "0.75rem" }}>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Please describe your service requirement..."
+                                                    value={form.otherService}
+                                                    onChange={e => setForm(f => ({ ...f, otherService: e.target.value }))}
+                                                    onFocus={() => setOtherFocused(true)}
+                                                    onBlur={() => setOtherFocused(false)}
+                                                    style={{
+                                                        width: "100%", padding: "0.7rem 1rem",
+                                                        fontFamily: "'Outfit',sans-serif", fontSize: "0.85rem",
+                                                        color: C.ink, background: C.cream,
+                                                        border: `1.5px solid ${otherFocused ? C.coral : "rgba(255,60,40,0.25)"}`,
+                                                        borderRadius: 10, outline: "none",
+                                                        boxSizing: "border-box",
+                                                        boxShadow: otherFocused ? "0 0 0 3px rgba(255,60,40,0.07)" : "none",
+                                                        transition: "border-color 0.22s, box-shadow 0.22s",
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+
                                         {errors.services && <div style={errStyle}>Please select at least one service</div>}
                                     </div>
 
                                     <FloatInput label="Tell us about your project (optional)" value={form.message} multiline rows={sm ? 4 : 5}
                                         onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
 
-                                    {/* ── Send Buttons: WhatsApp + Gmail side by side ── */}
+                                    {/* ── Send Buttons ── */}
                                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
 
                                         {/* WhatsApp Button */}
                                         <button
                                             onClick={handleWhatsAppSubmit} disabled={sending}
+                                            onMouseEnter={() => setWaHov(true)} onMouseLeave={() => setWaHov(false)}
                                             style={{
                                                 fontFamily: "'Syne',sans-serif", fontWeight: 700,
                                                 fontSize: sm ? "0.8rem" : "0.88rem",
-                                                background: sending ? "rgba(37,211,102,0.65)" : "#25D366",
+                                                background: sending ? "rgba(37,211,102,0.65)" : waHov ? "#20c25a" : "#25D366",
                                                 color: "#fff", border: "none",
                                                 padding: sm ? "0.95rem 0.6rem" : "1.05rem 0.8rem",
                                                 borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
                                                 transition: "all 0.25s", width: "100%",
-                                                boxShadow: "0 5px 18px rgba(37,211,102,0.26)",
+                                                boxShadow: waHov && !sending ? "0 8px 28px rgba(37,211,102,0.45)" : "0 5px 18px rgba(37,211,102,0.26)",
+                                                transform: waHov && !sending ? "translateY(-2px)" : "none",
                                                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem",
                                                 letterSpacing: "0.03em",
                                             }}
@@ -620,15 +646,17 @@ export default function ContactPage() {
                                         {/* Gmail Button */}
                                         <button
                                             onClick={handleGmailSubmit} disabled={sending}
+                                            onMouseEnter={() => setGmHov(true)} onMouseLeave={() => setGmHov(false)}
                                             style={{
                                                 fontFamily: "'Syne',sans-serif", fontWeight: 700,
                                                 fontSize: sm ? "0.8rem" : "0.88rem",
-                                                background: sending ? "rgba(234,67,53,0.5)" : "#EA4335",
+                                                background: sending ? "rgba(30,27,40,0.7)" : gmHov ? "#2d2840" : "#1E1B28",
                                                 color: "#fff", border: "none",
                                                 padding: sm ? "0.95rem 0.6rem" : "1.05rem 0.8rem",
                                                 borderRadius: 50, cursor: sending ? "not-allowed" : "pointer",
                                                 transition: "all 0.25s", width: "100%",
-                                                boxShadow: "0 5px 18px rgba(234,67,53,0.26)",
+                                                boxShadow: gmHov && !sending ? "0 8px 28px rgba(0,0,0,0.45)" : "0 5px 18px rgba(0,0,0,0.28)",
+                                                transform: gmHov && !sending ? "translateY(-2px)" : "none",
                                                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.45rem",
                                                 letterSpacing: "0.03em",
                                             }}
@@ -641,8 +669,12 @@ export default function ContactPage() {
                                                     animation: "spin 0.7s linear infinite",
                                                 }} />
                                             ) : (
-                                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" fill="white" />
+                                                <svg width="18" height="14" viewBox="0 0 48 36" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill="#4285F4" d="M0 36V8.7L24 26 48 8.7V36z" />
+                                                    <path fill="#EA4335" d="M0 8.7L24 26 48 8.7 24 0z" />
+                                                    <path fill="#FBBC05" d="M0 8.7V36l7.5-7.5V16.2z" />
+                                                    <path fill="#34A853" d="M48 8.7V36l-7.5-7.5V16.2z" />
+                                                    <path fill="#4285F4" d="M7.5 28.5V36H0l7.5-7.5zM40.5 28.5V36H48l-7.5-7.5z" />
                                                 </svg>
                                             )}
                                             {sending ? "Opening..." : "Send Email"}
@@ -678,7 +710,6 @@ export default function ContactPage() {
                                         userSelect: "none", pointerEvents: "none",
                                     }}>HI</div>
                                 )}
-
                                 <STag light>Reach Us Directly</STag>
                                 <h3 style={{
                                     fontFamily: "'Bebas Neue',sans-serif",
@@ -688,7 +719,6 @@ export default function ContactPage() {
                                 }}>
                                     WE'RE REAL PEOPLE.<br /><span style={{ color: C.coral }}>LET'S TALK.</span>
                                 </h3>
-
                                 <div style={{
                                     display: "flex", flexDirection: "column",
                                     gap: sm ? "0.5rem" : "0.6rem",
@@ -699,7 +729,6 @@ export default function ContactPage() {
                                     <InfoCard iconKey="whatsapp" label="WhatsApp" value="+91 93981 98719" sub="Quick chats & project briefs" href="https://wa.me/919398198719" sm={sm} />
                                     <InfoCard iconKey="location" label="Location" value="SR Nagar, Hyderabad" sub="Telangana, India 500038" sm={sm} />
                                 </div>
-
                                 <MapCard sm={sm} />
                             </div>
                         </Reveal>

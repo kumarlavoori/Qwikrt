@@ -92,7 +92,7 @@ export default function Navbar({ page, setPage, goToContactForm }) {
                     <button onClick={goToContactForm} style={{ width: "100%", padding: "0.9rem 1.5rem", background: C.coral, color: "#fff", border: "none", borderRadius: 50, fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.9rem", cursor: "none", boxShadow: "0 6px 22px rgba(255,60,40,0.35)" }}>
                         Start a Project →
                     </button>
-                    <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: "0.72rem", color: "rgba(247,243,236,0.25)", textAlign: "center", marginTop: "1rem" }}>Based in Hyderabad · hello@qwikgen.in</p>
+                    <p style={{ fontFamily: "'Outfit',sans-serif", fontSize: "0.72rem", color: "rgba(247,243,236,0.25)", textAlign: "center", marginTop: "1rem" }}>QwikGen · Based in Hyderabad · qwikgen.in</p>
                 </div>
             </div>
         </>
